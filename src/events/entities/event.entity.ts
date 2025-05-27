@@ -1,3 +1,4 @@
+import { Feedback } from 'src/feedback/entities/feedback.entity';
 import { User } from 'src/users/entities/user.entity';
 import {
   Column,
@@ -36,4 +37,7 @@ export class Event {
 
   @OneToMany(() => User, (user) => user.events)
   created_by: User;
+
+  @OneToMany(() => Feedback, (feedback) => feedback.event)
+  feedbacks: Feedback[];
 }

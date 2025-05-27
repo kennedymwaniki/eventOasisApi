@@ -9,6 +9,7 @@ import {
 } from 'typeorm';
 import { UserRole } from '../enums/roleEnums';
 import { Event } from 'src/events/entities/event.entity';
+import { Feedback } from 'src/feedback/entities/feedback.entity';
 
 @Entity()
 export class User {
@@ -47,6 +48,9 @@ export class User {
 
   @ManyToOne(() => Event, (event) => event.created_by)
   events: Event[];
+
+  @ManyToOne(() => Feedback, (feedback) => feedback.user)
+  feedbacks: Feedback[];
 
   @CreateDateColumn()
   created_at!: Timestamp;

@@ -1,1 +1,30 @@
-export class CreateEventDto {}
+import {
+  IsDate,
+  IsInt,
+  IsNotEmpty,
+  IsString,
+  MaxLength,
+} from 'class-validator';
+import { Timestamp } from 'typeorm';
+
+export class CreateEventDto {
+  @IsString()
+  event_name: string;
+
+  @IsDate()
+  @IsNotEmpty()
+  event_date: Timestamp;
+
+  @IsString()
+  @MaxLength(100)
+  @IsNotEmpty()
+  event_location: string;
+
+  @IsString()
+  @IsNotEmpty()
+  event_description: string;
+
+  @IsInt()
+  @IsNotEmpty()
+  created_by: number;
+}

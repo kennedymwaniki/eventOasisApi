@@ -7,6 +7,7 @@ import { FeedbackModule } from './feedback/feedback.module';
 import { EventRegistrationModule } from './event_registration/event_registration.module';
 import { PaymentsModule } from './payments/payments.module';
 import { TicketsModule } from './tickets/tickets.module';
+import { EventRegistrationsModule } from './event_registrations/event_registrations.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { TicketsModule } from './tickets/tickets.module';
     EventRegistrationModule,
     PaymentsModule,
     TicketsModule,
+    EventRegistrationsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
