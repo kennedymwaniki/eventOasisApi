@@ -25,5 +25,5 @@ export class CreateEventDto {
 
   @IsInt()
   @IsNotEmpty()
-  created_by: number;
+  userId: number;
 }

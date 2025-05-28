@@ -5,7 +5,9 @@ import { User } from 'src/users/entities/user.entity';
 import {
   Column,
   Entity,
+  JoinTable,
   ManyToMany,
+  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
   Timestamp,
@@ -38,15 +40,16 @@ export class Event {
   })
   event_description: string;
 
-  // @OneToMany(() => User, (user) => user.events)
-  // user: User;
+  @ManyToOne(() => User, (user) => user.events)
+  @JoinTable()
+  user: User;
 
-  // @OneToMany(() => Feedback, (feedback) => feedback.event)
-  // feedbacks: Feedback[];
+  @OneToMany(() => Feedback, (feedback) => feedback.event)
+  feedbacks: Feedback[];
 
-  // @ManyToMany(
-  //   () => EventRegistration,
-  //   (eventRegistration) => eventRegistration.event,
-  // )
-  // registration: EventRegistration[];
+  @OneToMany(
+    () => EventRegistration,
+    (eventRegistration) => eventRegistration.event,
+  )
+  registration: EventRegistration[];
 }

@@ -4,6 +4,7 @@ import {
   CreateDateColumn,
   Entity,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   Timestamp,
   UpdateDateColumn,
@@ -11,6 +12,7 @@ import {
 import { UserRole } from '../enums/roleEnums';
 import { Event } from 'src/events/entities/event.entity';
 import { Feedback } from 'src/feedback/entities/feedback.entity';
+import { EventRegistration } from 'src/event_registration/entities/event_registration.entity';
 
 @Entity()
 export class User {
@@ -20,7 +22,12 @@ export class User {
   @Column()
   name!: string;
 
-  @Column()
+  @Column({
+    type: 'varchar',
+    length: 100,
+    unique: true,
+    nullable: false,
+  })
   email: string;
 
   @Column({
@@ -28,16 +35,13 @@ export class User {
     length: 100,
     nullable: false,
   })
-  passowrd!: string;
+  password!: string;
 
   @Column({
     type: 'varchar',
     nullable: false,
   })
   phone!: string;
-
-  @CreateDateColumn()
-  createdAt!: Date;
 
   @Column({
     type: 'enum',
@@ -47,16 +51,19 @@ export class User {
   })
   role!: UserRole;
 
-  // @ManyToOne(() => Event, (event) => event.user)
-  // events: Event[];
+  @OneToMany(() => Event, (event) => event.user, {
+    eager: true,
+    cascade: true,
+  })
+  events: Event[];
 
-  // @ManyToOne(() => Feedback, (feedback) => feedback.user)
-  // feedbacks: Feedback[];
+  @OneToMany(() => Feedback, (feedback) => feedback.user)
+  feedbacks: Feedback[];
 
-  // @ManyToOne(() => Event, (event) => event.registration)
-  // eventRegistration: Event[];
+  @OneToMany(() => EventRegistration, (event) => event.user)
+  eventRegistration: EventRegistration[];
 
-  @CreateDateColumn()
+  @CreateDateColumn() // reove this one
   created_at!: Timestamp;
 
   @UpdateDateColumn()

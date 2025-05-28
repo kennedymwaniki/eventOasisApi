@@ -34,15 +34,15 @@ export class Ticket {
   @Column()
   userId: number;
 
-  // @ManyToOne(() => Payment, { nullable: true })
-  // @JoinColumn({ name: 'payment_id' })
-  // payment: Payment;
+  @ManyToOne(() => Payment, { nullable: true })
+  @JoinColumn({ name: 'payment_id' })
+  payment: Payment;
 
   @Column({ nullable: true })
   paymentId: number;
 
-  // @ManyToOne(() => EventRegistration)
-  // eventRegistration: EventRegistration;
+  @ManyToOne(() => EventRegistration)
+  registeredEvent: EventRegistration[];
 
   @Column()
   eventRegistrationId: number;

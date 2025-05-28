@@ -1,23 +1,30 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { PaymentStatus } from '../enum/paymentEnum';
-import { Ticket } from 'src/tickets/entities/ticket.entity';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { PaymentStatus } from '../../payments/enum/paymentEnum';
+
 import { User } from 'src/users/entities/user.entity';
 import { Event } from 'src/events/entities/event.entity';
+import { Payment } from 'src/payments/entities/payment.entity';
+import { Ticket } from 'src/tickets/entities/ticket.entity';
 
 @Entity()
 export class EventRegistration {
   @PrimaryGeneratedColumn()
   id: number;
 
-  // @OneToMany(() => User, (user) => user.eventRegistration)
-  // user: User;
+  @ManyToOne(() => User, (user) => user.eventRegistration)
+  user: User;
 
-  // @OneToMany(() => Ticket, (ticket) => ticket.eventRegistration)
-  // ticket: Ticket;
+  @OneToMany(() => Ticket, (ticket) => ticket.registeredEvent)
+  ticket: Ticket;
 
-  // @OneToMany(() => Event, (event) => event.registration)
-  // event: Event;
+  @ManyToOne(() => Event, (event) => event.registration)
+  event: Event;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   registrationDate: Date;
@@ -32,4 +39,7 @@ export class EventRegistration {
 
   @Column({ type: 'decimal', precision: 10, scale: 2, nullable: false })
   PaymentAmount: number;
+
+  @OneToMany(() => Payment, (payment) => payment.registeredEvent)
+  payment: Payment;
 }

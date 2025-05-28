@@ -14,11 +14,11 @@ export class Feedback {
   @PrimaryGeneratedColumn()
   id: number;
 
-  // @ManyToOne(() => Event, (event) => event.feedbacks)
-  // event: number;
+  @ManyToOne(() => Event, (event) => event.feedbacks)
+  event: number;
 
-  // @OneToMany(() => User, (user) => user.feedbacks)
-  // user: User;
+  @ManyToOne(() => User, (user) => user.feedbacks)
+  user: User;
 
   @Column({
     type: 'int',
