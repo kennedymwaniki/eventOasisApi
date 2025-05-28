@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Event } from 'src/events/entities/event.entity';
 import { User } from 'src/users/entities/user.entity';
 import {
@@ -13,11 +14,11 @@ export class Feedback {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => Event, (event) => event.feedbacks)
-  event: number;
+  // @ManyToOne(() => Event, (event) => event.feedbacks)
+  // event: number;
 
-  @OneToMany(() => User, (user) => user.feedbacks)
-  user: User;
+  // @OneToMany(() => User, (user) => user.feedbacks)
+  // user: User;
 
   @Column({
     type: 'int',

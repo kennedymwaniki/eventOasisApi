@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -7,7 +10,10 @@ import { FeedbackModule } from './feedback/feedback.module';
 import { EventRegistrationModule } from './event_registration/event_registration.module';
 import { PaymentsModule } from './payments/payments.module';
 import { TicketsModule } from './tickets/tickets.module';
-import { EventRegistrationsModule } from './event_registrations/event_registrations.module';
+
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import databaseConfig from './config/databaseConfig';
 
 @Module({
   imports: [
@@ -17,7 +23,26 @@ import { EventRegistrationsModule } from './event_registrations/event_registrati
     EventRegistrationModule,
     PaymentsModule,
     TicketsModule,
-    EventRegistrationsModule,
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: '.env',
+      load: [databaseConfig], // path to the environment variables file
+    }),
+
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        type: 'postgres',
+        host: configService.get<string>('DATABASE_HOST', 'localhost'),
+        port: configService.get<number>('DATABASE_PORT', 5432),
+        username: configService.get<string>('DATABASE_USERNAME'),
+        password: configService.get<string>('DATABASE_PASSWORD'),
+        database: configService.get<string>('DATABASE_NAME'),
+        autoLoadEntities: true,
+        synchronize: true, // automatically creates the database schema
+      }),
+    }),
   ],
   controllers: [AppController],
   providers: [AppService],

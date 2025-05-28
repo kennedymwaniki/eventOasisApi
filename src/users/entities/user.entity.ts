@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   Column,
   CreateDateColumn,
@@ -46,11 +47,14 @@ export class User {
   })
   role!: UserRole;
 
-  @ManyToOne(() => Event, (event) => event.created_by)
-  events: Event[];
+  // @ManyToOne(() => Event, (event) => event.user)
+  // events: Event[];
 
-  @ManyToOne(() => Feedback, (feedback) => feedback.user)
-  feedbacks: Feedback[];
+  // @ManyToOne(() => Feedback, (feedback) => feedback.user)
+  // feedbacks: Feedback[];
+
+  // @ManyToOne(() => Event, (event) => event.registration)
+  // eventRegistration: Event[];
 
   @CreateDateColumn()
   created_at!: Timestamp;

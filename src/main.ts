@@ -1,8 +1,43 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { ConsoleLogger, ValidationPipe } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    // logger: new ConsoleLogger({
+    //   prefix: 'MyApp', // Default is "Nest"
+    //   logLevels: ['log', 'error', 'warn', 'debug', 'verbose'], // Default is ['log', 'error', 'warn']
+    //   colors: true, // Default is true
+    //   timestamp: true, // Default is false
+    //   json: true, // Default is false
+    // }),
+  });
+
+  app
+    .useGlobalPipes
+    // new ValidationPipe({
+    //   whitelist: true, // strip out properties that are not in the DTO
+    //   forbidNonWhitelisted: true, // throw an error if a property is not in the DTO is in the request body
+    //   transform: true, // transform the request body to be an instance of the DTO class after validation and not a plain object
+    //   transformOptions: {
+    //     enableImplicitConversion: true, // allow implicit conversion of types, no need to use @Type decorator
+    //   },
+    // }),
+    ();
+
+  const configService = app.get(ConfigService);
+  console.log('Database config:', {
+    host: configService.get('DATABASE_HOST'),
+    port: configService.get('DATABASE_PORT'),
+    username: configService.get('DATABASE_USERNAME'),
+    database: configService.get('DATABASE_NAME'),
+    autoLoadEntities: configService.get('DATABASE_AUTOLOAD'),
+    synchronize: configService.get('DATABASE_SYNC'),
+  });
+
   await app.listen(process.env.PORT ?? 3000);
   console.log(`Application is running on: ${await app.getUrl()}`);
   console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);

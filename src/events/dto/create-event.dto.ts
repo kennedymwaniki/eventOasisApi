@@ -5,7 +5,6 @@ import {
   IsString,
   MaxLength,
 } from 'class-validator';
-import { Timestamp } from 'typeorm';
 
 export class CreateEventDto {
   @IsString()
@@ -13,7 +12,7 @@ export class CreateEventDto {
 
   @IsDate()
   @IsNotEmpty()
-  event_date: Timestamp;
+  event_date: Date;
 
   @IsString()
   @MaxLength(100)

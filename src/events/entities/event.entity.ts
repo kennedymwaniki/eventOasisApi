@@ -1,8 +1,11 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { EventRegistration } from 'src/event_registration/entities/event_registration.entity';
 import { Feedback } from 'src/feedback/entities/feedback.entity';
 import { User } from 'src/users/entities/user.entity';
 import {
   Column,
   Entity,
+  ManyToMany,
   OneToMany,
   PrimaryGeneratedColumn,
   Timestamp,
@@ -20,9 +23,9 @@ export class Event {
   event_name: string;
 
   @Column({
-    type: 'timestamp with local time zone',
+    type: 'timestamp',
   })
-  event_date: Timestamp;
+  event_date: string;
 
   @Column({
     type: 'varchar',
@@ -35,9 +38,15 @@ export class Event {
   })
   event_description: string;
 
-  @OneToMany(() => User, (user) => user.events)
-  created_by: User;
+  // @OneToMany(() => User, (user) => user.events)
+  // user: User;
 
-  @OneToMany(() => Feedback, (feedback) => feedback.event)
-  feedbacks: Feedback[];
+  // @OneToMany(() => Feedback, (feedback) => feedback.event)
+  // feedbacks: Feedback[];
+
+  // @ManyToMany(
+  //   () => EventRegistration,
+  //   (eventRegistration) => eventRegistration.event,
+  // )
+  // registration: EventRegistration[];
 }
