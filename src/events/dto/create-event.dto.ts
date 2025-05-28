@@ -12,7 +12,7 @@ export class CreateEventDto {
 
   @IsDate()
   @IsNotEmpty()
-  event_date: Date;
+  event_date: string;
 
   @IsString()
   @MaxLength(100)
