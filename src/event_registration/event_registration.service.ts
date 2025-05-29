@@ -41,9 +41,8 @@ export class EventsRegistrationService {
       );
     }
 
-    // Create registration
     const newRegistration = this.eventRegistrationRepository.create({
-      user,
+      userId: crea,
       event,
       registrationDate: createEventRegistrationDto.registrationDate,
       paymentStatus: createEventRegistrationDto.paymentStatus,

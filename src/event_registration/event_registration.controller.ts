@@ -28,6 +28,7 @@ export class EventsRegistrationController {
   async create(
     @Body() createEventDto: CreateEventRegistrationDto,
   ): Promise<EventRegistration> {
+    //const user = await this.
     return await this.eventsRegistrationService.create(createEventDto);
   }
 

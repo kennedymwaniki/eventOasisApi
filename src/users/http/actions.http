@@ -12,5 +12,5 @@ Content-Type: application/json
     "email": "jane@gmail.com",
     "password": "Password123!",
     "phone": "123-456-7890",
-    "role": "user"
+    "role": "organiser"
 }

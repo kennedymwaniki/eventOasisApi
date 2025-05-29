@@ -30,8 +30,8 @@ export class UsersController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string): Promise<User> {
-    return this.usersService.findOne(+id);
+  findOne(@Param('id') id: number): Promise<User> {
+    return this.usersService.findOne(id);
   }
 
   @Patch(':id')

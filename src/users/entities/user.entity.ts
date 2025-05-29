@@ -57,7 +57,9 @@ export class User {
   })
   events: Event[];
 
-  @OneToMany(() => Feedback, (feedback) => feedback.user)
+  @OneToMany(() => Feedback, (feedback) => feedback.user, {
+    eager: true,
+  })
   feedbacks: Feedback[];
 
   @OneToMany(() => EventRegistration, (event) => event.user)

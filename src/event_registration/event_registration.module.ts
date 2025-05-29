@@ -15,6 +15,6 @@ import { EventsModule } from 'src/events/events.module';
     UsersModule,
     EventsModule,
     TypeOrmModule.forFeature([EventRegistration]),
-  ], // Add your entities here
+  ],
 })
 export class EventRegistrationModule {}

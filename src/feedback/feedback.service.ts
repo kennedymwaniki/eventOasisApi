@@ -5,19 +5,32 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Feedback } from './entities/feedback.entity';
 
+import { UsersService } from 'src/users/users.service';
+
 @Injectable()
 export class FeedbackService {
   constructor(
     @InjectRepository(Feedback)
     private readonly feebackRepository: Repository<Feedback>,
+
+    private readonly userService: UsersService,
   ) {}
 
   async create(createFeedbackDto: CreateFeedbackDto) {
+    const user = await this.userService.findOne(createFeedbackDto.userId);
+
+    if (!user) {
+      throw new BadRequestException(
+        `User with id ${createFeedbackDto.userId} not found on the database`,
+      );
+    }
     return await this.feebackRepository.save(createFeedbackDto);
   }
 
-  findAll() {
-    return `This action returns al`;
+  async findAll() {
+    return await this.feebackRepository.find({
+      relations: ['event', 'user'],
+    });
   }
 
   async findOne(id: number) {
