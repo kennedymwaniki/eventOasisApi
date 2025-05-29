@@ -33,11 +33,13 @@ export class EventsRegistrationController {
   }
 
   @Get()
+  @HttpCode(HttpStatus.OK)
   async findAll(): Promise<EventRegistration[]> {
     return await this.eventsRegistrationService.findAll();
   }
 
   @Get(':id')
+  @HttpCode(HttpStatus.OK)
   async findOne(
     @Param('id', ParseIntPipe) id: number,
   ): Promise<EventRegistration> {
@@ -45,6 +47,7 @@ export class EventsRegistrationController {
   }
 
   @Patch(':id')
+  @HttpCode(HttpStatus.OK)
   async update(
     @Param('id') id: number,
     @Body() updateEventDto: UpdateEventDto,
@@ -53,6 +56,7 @@ export class EventsRegistrationController {
   }
 
   @Delete(':id')
+  @HttpCode(HttpStatus.NO_CONTENT)
   @HttpCode(HttpStatus.NO_CONTENT)
   async remove(@Param('id') id: string): Promise<void> {
     return this.eventsRegistrationService.remove(+id);

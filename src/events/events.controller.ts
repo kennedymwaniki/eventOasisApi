@@ -31,11 +31,13 @@ export class EventsController {
   }
 
   @Get(':id')
+  @HttpCode(HttpStatus.OK)
   async findOne(@Param('id', ParseIntPipe) id: string): Promise<Event> {
     return await this.eventsService.findOne(+id);
   }
 
   @Patch(':id')
+  @HttpCode(HttpStatus.OK)
   async update(
     @Param('id') id: number,
     @Body() updateEventDto: UpdateEventDto,

@@ -16,13 +16,17 @@ export class EventsService {
   ) {}
 
   async create(createEventDto: CreateEventDto): Promise<Event> {
-    const userId = await this.userService.findOne(createEventDto.userId);
-    if (!userId) {
+    const user = await this.userService.findOne(createEventDto.userId);
+    if (!user) {
       throw new NotFoundException(
         `User with ID ${createEventDto.userId} not found`,
       );
     }
-    const newEvent = this.eventsRepository.create(createEventDto);
+    const newEvent = this.eventsRepository.create({
+      ...createEventDto,
+      user: user,
+    });
+
     return this.eventsRepository.save(newEvent);
   }
 

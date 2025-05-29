@@ -42,14 +42,12 @@ export class EventsRegistrationService {
     }
 
     const newRegistration = this.eventRegistrationRepository.create({
-      userId: crea,
-      event,
-      registrationDate: createEventRegistrationDto.registrationDate,
-      paymentStatus: createEventRegistrationDto.paymentStatus,
-      PaymentAmount: createEventRegistrationDto.amount,
+      ...createEventRegistrationDto,
+      user: user,
+      event: event,
     });
 
-    return await this.eventRegistrationRepository.save(newRegistration);
+    return this.eventRegistrationRepository.save(newRegistration);
   }
 
   async findAll(): Promise<EventRegistration[]> {

@@ -1,13 +1,19 @@
 import { EventRegistration } from 'src/event_registration/entities/event_registration.entity';
 import { PaymentStatus } from 'src/payments/enum/paymentEnum';
-import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  // OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 export class Payment {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @OneToOne(
+  @ManyToOne(
     () => EventRegistration,
     (eventRegistration) => eventRegistration.payment,
   )

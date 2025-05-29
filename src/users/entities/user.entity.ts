@@ -65,7 +65,7 @@ export class User {
   @OneToMany(() => EventRegistration, (event) => event.user)
   eventRegistration: EventRegistration[];
 
-  @CreateDateColumn() // reove this one
+  @CreateDateColumn() //! resolve this one
   created_at!: Timestamp;
 
   @UpdateDateColumn()

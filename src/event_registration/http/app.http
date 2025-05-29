@@ -9,5 +9,16 @@ Content-Type: application/json
   "eventId":1,
   "userId": 1,
   "paymentStatus":"PENDING",
+  "registrationDate":"2023-10-01T12:00:00Z",
   "amount":300
+}
+
+
+### Update registration
+PATCH http://localhost:8000/eventsRegistration/1
+Content-Type: application/json
+
+{
+  "paymentStatus": "COMPLETED",
+  "amount": 350
 }

@@ -1,4 +1,4 @@
-import { IsDate, IsEnum, IsInt } from 'class-validator';
+import { IsDateString, IsEnum, IsInt } from 'class-validator';
 import { PaymentStatus } from 'src/payments/enum/paymentEnum';
 
 export class CreateEventRegistrationDto {
@@ -8,11 +8,12 @@ export class CreateEventRegistrationDto {
   @IsInt()
   userId: number;
 
-  @IsDate()
-  registrationDate: Date;
+  @IsDateString()
+  registrationDate: string;
 
   @IsEnum(PaymentStatus)
   paymentStatus: PaymentStatus;
 
+  @IsInt()
   amount: number;
 }

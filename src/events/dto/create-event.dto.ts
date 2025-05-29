@@ -1,5 +1,5 @@
 import {
-  IsDate,
+  IsDateString,
   IsInt,
   IsNotEmpty,
   IsString,
@@ -10,7 +10,7 @@ export class CreateEventDto {
   @IsString()
   event_name: string;
 
-  @IsDate()
+  @IsDateString()
   @IsNotEmpty()
   event_date: string;
 

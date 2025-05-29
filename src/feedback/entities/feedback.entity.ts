@@ -15,7 +15,7 @@ export class Feedback {
   id: number;
 
   @ManyToOne(() => Event, (event) => event.feedbacks)
-  event: number;
+  event: Event;
 
   @ManyToOne(() => User, (user) => user.feedbacks)
   user: User;

@@ -3,16 +3,26 @@ GET http://localhost:8000/events
 
 
 
-
-
-
+###
 POST http://localhost:8000/events
 Content-Type: application/json
 
 {
   "event_name": "Tech Conference 2025",
-  "event_date": "2025-06-15T10:00:00Z",
+  "event_date": "2025-06-15",
   "event_location": "Nairobi Convention Center",
   "event_description": "Annual tech conference featuring the latest innovations in tech",
-  "userId": 1
+  "userId": 3
+}
+
+
+
+###
+PATCH http://localhost:8000/events/1
+Content-Type: application/json
+
+{
+  "event_name": "Decode Tech Conference 2025",
+  "event_location": "New Nairobi Convention Center",
+  "event_description": "Decode description with more details about the conference"
 }

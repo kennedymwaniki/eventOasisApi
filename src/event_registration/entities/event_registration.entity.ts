@@ -38,7 +38,7 @@ export class EventRegistration {
   paymentStatus: PaymentStatus;
 
   @Column({ type: 'decimal', precision: 10, scale: 2, nullable: false })
-  PaymentAmount: number;
+  amount: number;
 
   @OneToMany(() => Payment, (payment) => payment.registeredEvent)
   payment: Payment;
