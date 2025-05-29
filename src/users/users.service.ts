@@ -13,6 +13,15 @@ export class UsersService {
   ) {}
 
   async create(createUserDto: CreateUserDto): Promise<User> {
+    const existingUser = await this.usersRepository.findOneBy({
+      email: createUserDto.email,
+    });
+    if (existingUser) {
+      throw new NotFoundException(
+        `User with email ${createUserDto.email} already exists`,
+      );
+    }
+
     const user = this.usersRepository.create(createUserDto);
     return this.usersRepository.save(user);
   }

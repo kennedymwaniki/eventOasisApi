@@ -6,45 +6,54 @@ import {
   Patch,
   Param,
   Delete,
+  HttpCode,
+  HttpStatus,
+  ParseIntPipe,
 } from '@nestjs/common';
-import { EventRegistrationService } from './event_registration.service';
-import { CreateEventRegistrationDto } from './dto/create-event_registration.dto';
-import { UpdateEventRegistrationDto } from './dto/update-event_registration.dto';
 
-@Controller('event-registration')
-export class EventRegistrationController {
+import { UpdateEventDto } from 'src/events/dto/update-event.dto';
+
+import { EventsRegistrationService } from './event_registration.service';
+import { EventRegistration } from './entities/event_registration.entity';
+import { CreateEventRegistrationDto } from './dto/create-event_registration.dto';
+
+@Controller('eventsRegistration')
+export class EventsRegistrationController {
   constructor(
-    private readonly eventRegistrationService: EventRegistrationService,
+    private readonly eventsRegistrationService: EventsRegistrationService,
   ) {}
 
   @Post()
-  create(@Body() createEventRegistrationDto: CreateEventRegistrationDto) {
-    return this.eventRegistrationService.create(createEventRegistrationDto);
+  @HttpCode(HttpStatus.CREATED)
+  async create(
+    @Body() createEventDto: CreateEventRegistrationDto,
+  ): Promise<EventRegistration> {
+    return await this.eventsRegistrationService.create(createEventDto);
   }
 
   @Get()
-  findAll() {
-    return this.eventRegistrationService.findAll();
+  async findAll(): Promise<EventRegistration[]> {
+    return await this.eventsRegistrationService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.eventRegistrationService.findOne(+id);
+  async findOne(
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<EventRegistration> {
+    return await this.eventsRegistrationService.findOne(id);
   }
 
   @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateEventRegistrationDto: UpdateEventRegistrationDto,
-  ) {
-    return this.eventRegistrationService.update(
-      +id,
-      updateEventRegistrationDto,
-    );
+  async update(
+    @Param('id') id: number,
+    @Body() updateEventDto: UpdateEventDto,
+  ): Promise<EventRegistration> {
+    return await this.eventsRegistrationService.update(id, updateEventDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.eventRegistrationService.remove(+id);
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async remove(@Param('id') id: string): Promise<void> {
+    return this.eventsRegistrationService.remove(+id);
   }
 }

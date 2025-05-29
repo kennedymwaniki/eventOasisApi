@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { EventRegistration } from 'src/event_registration/entities/event_registration.entity';
 import { Event } from 'src/events/entities/event.entity';
 import { Payment } from 'src/payments/entities/payment.entity';

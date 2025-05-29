@@ -1,12 +1,20 @@
+import { UsersModule } from 'src/users/users.module';
 import { Module } from '@nestjs/common';
-import { EventRegistrationService } from './event_registration.service';
-import { EventRegistrationController } from './event_registration.controller';
+
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { EventRegistration } from './entities/event_registration.entity';
+import { EventsRegistrationService } from './event_registration.service';
+import { EventsRegistrationController } from './event_registration.controller';
+import { EventsModule } from 'src/events/events.module';
 
 @Module({
-  controllers: [EventRegistrationController],
-  providers: [EventRegistrationService],
-  imports: [TypeOrmModule.forFeature([EventRegistration])], // Add your entities here
+  controllers: [EventsRegistrationController],
+  providers: [EventsRegistrationService],
+
+  imports: [
+    UsersModule,
+    EventsModule,
+    TypeOrmModule.forFeature([EventRegistration]),
+  ], // Add your entities here
 })
 export class EventRegistrationModule {}

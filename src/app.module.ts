@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -13,6 +10,7 @@ import { TicketsModule } from './tickets/tickets.module';
 
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AuthModule } from './auth/auth.module';
 import databaseConfig from './config/databaseConfig';
 
 @Module({
@@ -43,6 +41,8 @@ import databaseConfig from './config/databaseConfig';
         synchronize: true, // automatically creates the database schema
       }),
     }),
+
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

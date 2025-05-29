@@ -1,26 +1,100 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+
+import { UsersService } from 'src/users/users.service';
+import { EventsService } from 'src/events/events.service';
+import { EventRegistration } from './entities/event_registration.entity';
+
 import { CreateEventRegistrationDto } from './dto/create-event_registration.dto';
 import { UpdateEventRegistrationDto } from './dto/update-event_registration.dto';
 
 @Injectable()
-export class EventRegistrationService {
-  create(createEventRegistrationDto: CreateEventRegistrationDto) {
-    return 'This action adds a new eventRegistration';
+export class EventsRegistrationService {
+  constructor(
+    @InjectRepository(EventRegistration)
+    private eventRegistrationRepository: Repository<EventRegistration>,
+    private readonly userService: UsersService,
+    private readonly eventsService: EventsService,
+  ) {}
+
+  async create(
+    createEventRegistrationDto: CreateEventRegistrationDto,
+  ): Promise<EventRegistration> {
+    // Verify user exists
+    const user = await this.userService.findOne(
+      createEventRegistrationDto.userId,
+    );
+    if (!user) {
+      throw new NotFoundException(
+        `User with ID ${createEventRegistrationDto.userId} not found`,
+      );
+    }
+
+    // Verify event exists
+    const event = await this.eventsService.findOne(
+      createEventRegistrationDto.eventId,
+    );
+    if (!event) {
+      throw new NotFoundException(
+        `Event with ID ${createEventRegistrationDto.eventId} not found`,
+      );
+    }
+
+    // Create registration
+    const newRegistration = this.eventRegistrationRepository.create({
+      user,
+      event,
+      registrationDate: createEventRegistrationDto.registrationDate,
+      paymentStatus: createEventRegistrationDto.paymentStatus,
+      PaymentAmount: createEventRegistrationDto.amount,
+    });
+
+    return await this.eventRegistrationRepository.save(newRegistration);
   }
 
-  findAll() {
-    return `This action returns all eventRegistration`;
+  async findAll(): Promise<EventRegistration[]> {
+    return this.eventRegistrationRepository.find({
+      relations: ['user', 'event', 'payment', 'ticket'],
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} eventRegistration`;
+  async findOne(id: number): Promise<EventRegistration> {
+    const registration = await this.eventRegistrationRepository.findOne({
+      where: { id },
+      relations: ['user', 'event', 'payment', 'ticket'],
+    });
+
+    if (!registration) {
+      throw new NotFoundException(`Event registration with ID ${id} not found`);
+    }
+
+    return registration;
   }
 
-  update(id: number, updateEventRegistrationDto: UpdateEventRegistrationDto) {
-    return `This action updates a #${id} eventRegistration`;
+  async update(
+    id: number,
+    updateEventRegistrationDto: UpdateEventRegistrationDto,
+  ): Promise<EventRegistration> {
+    const registration = await this.eventRegistrationRepository.findOne({
+      where: { id },
+    });
+    if (!registration) {
+      throw new NotFoundException(`Event registration with ID ${id} not found`);
+    }
+
+    await this.eventRegistrationRepository.update(
+      id,
+      updateEventRegistrationDto,
+    );
+    return this.findOne(id);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} eventRegistration`;
+  async remove(id: number): Promise<void> {
+    const result = await this.eventRegistrationRepository.delete(id);
+
+    if (result.affected === 0) {
+      throw new NotFoundException(`Event registration with ID ${id} not found`);
+    }
   }
 }
