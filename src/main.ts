@@ -1,9 +1,7 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 
 import { ConsoleLogger, ValidationPipe } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -23,16 +21,6 @@ async function bootstrap() {
       transform: true, // transform the request body to be an instance of the DTO class after validation and not a plain object
     }),
   );
-
-  const configService = app.get(ConfigService);
-  console.log('Database config:', {
-    host: configService.get('DATABASE_HOST'),
-    port: configService.get('DATABASE_PORT'),
-    username: configService.get('DATABASE_USERNAME'),
-    database: configService.get('DATABASE_NAME'),
-    autoLoadEntities: configService.get('DATABASE_AUTOLOAD'),
-    synchronize: configService.get('DATABASE_SYNC'),
-  });
 
   await app.listen(process.env.PORT ?? 3000);
   console.log(`Application is running on: ${await app.getUrl()}`);

@@ -10,6 +10,7 @@ import { EventsModule } from 'src/events/events.module';
 @Module({
   controllers: [EventsRegistrationController],
   providers: [EventsRegistrationService],
+  exports: [EventsRegistrationService],
 
   imports: [
     UsersModule,

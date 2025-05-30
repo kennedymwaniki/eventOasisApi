@@ -1,26 +1,58 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateTicketDto } from './dto/create-ticket.dto';
 import { UpdateTicketDto } from './dto/update-ticket.dto';
+import { Ticket } from './entities/ticket.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class TicketsService {
+  constructor(
+    @InjectRepository(Ticket)
+    private readonly ticketRepository: Repository<Ticket>,
+  ) {}
   create(createTicketDto: CreateTicketDto) {
-    return 'This action adds a new ticket';
+    return this.ticketRepository.save(createTicketDto);
   }
 
-  findAll() {
-    return `This action returns all tickets`;
+  async findAll(): Promise<Ticket[]> {
+    return await this.ticketRepository.find({
+      relations: ['event', 'user', 'payment', 'registeredEvent'],
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} ticket`;
+  async findOne(id: number): Promise<Ticket> {
+    const ticket = await this.ticketRepository.findOne({
+      where: { id },
+      relations: ['event', 'user', 'payment', 'registeredEvent'],
+    });
+
+    if (!ticket) {
+      throw new NotFoundException(`Ticket with ID ${id} not found`);
+    }
+
+    return ticket;
   }
 
-  update(id: number, updateTicketDto: UpdateTicketDto) {
-    return `This action updates a #${id} ticket`;
+  async update(id: number, updateTicketDto: UpdateTicketDto): Promise<Ticket> {
+    const ticket = await this.ticketRepository.findOne({
+      where: { id },
+      relations: ['event', 'user', 'payment', 'registeredEvent'],
+    });
+
+    if (!ticket) {
+      throw new NotFoundException(`Ticket with ID ${id} not found`);
+    }
+
+    await this.ticketRepository.update(id, updateTicketDto);
+    return this.findOne(id);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} ticket`;
+  async remove(id: number): Promise<void> {
+    const result = await this.ticketRepository.delete(id);
+
+    if (result.affected === 0) {
+      throw new NotFoundException(`Ticket with ID ${id} not found`);
+    }
   }
 }
