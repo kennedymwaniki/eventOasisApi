@@ -5,6 +5,9 @@ import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
 import { Event } from './entities/event.entity';
 import { UsersService } from 'src/users/users.service';
+import { PaginationProvider } from 'src/config/pagination/providers/pagination.provider';
+import { Paginated } from 'src/config/pagination/providers/interfaces/paginated.interface';
+import { PaginatedQueryDto } from 'src/config/pagination/providers/dtos/paginatedQuery.dto';
 
 @Injectable()
 export class EventsService {
@@ -13,6 +16,7 @@ export class EventsService {
     private eventsRepository: Repository<Event>,
 
     private readonly userService: UsersService,
+    private readonly paginationProvider: PaginationProvider,
   ) {}
 
   async create(createEventDto: CreateEventDto): Promise<Event> {
@@ -30,10 +34,12 @@ export class EventsService {
     return this.eventsRepository.save(newEvent);
   }
 
-  async findAll(): Promise<Event[]> {
-    return this.eventsRepository.find({
-      relations: ['user', 'feedbacks', 'registration'],
-    });
+  async findAll(paginatedQuery: PaginatedQueryDto): Promise<Paginated<Event>> {
+    const events = this.paginationProvider.paginatedQuery(
+      paginatedQuery,
+      this.eventsRepository,
+    );
+    return events;
   }
 
   async findOne(id: number): Promise<Event> {

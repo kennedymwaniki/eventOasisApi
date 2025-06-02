@@ -9,11 +9,14 @@ import {
   HttpCode,
   HttpStatus,
   ParseIntPipe,
+  Query,
 } from '@nestjs/common';
 import { EventsService } from './events.service';
 import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
 import { Event } from './entities/event.entity';
+import { PaginatedQueryDto } from 'src/config/pagination/providers/dtos/paginatedQuery.dto';
+import { Paginated } from 'src/config/pagination/providers/interfaces/paginated.interface';
 
 @Controller('events')
 export class EventsController {
@@ -26,8 +29,10 @@ export class EventsController {
   }
 
   @Get()
-  async findAll(): Promise<Event[]> {
-    return this.eventsService.findAll();
+  async findAll(
+    @Query() paginationQuery: PaginatedQueryDto,
+  ): Promise<Paginated<Event>> {
+    return this.eventsService.findAll(paginationQuery);
   }
 
   @Get(':id')

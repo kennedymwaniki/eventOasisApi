@@ -13,6 +13,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import databaseConfig from './config/databaseConfig';
 import { LoggerMiddleware } from './logger.middleware';
+import { PaginationModule } from './config/pagination/pagination.module';
 
 @Module({
   imports: [
@@ -44,6 +45,8 @@ import { LoggerMiddleware } from './logger.middleware';
     }),
 
     AuthModule,
+
+    PaginationModule,
   ],
   controllers: [AppController],
   providers: [AppService],
