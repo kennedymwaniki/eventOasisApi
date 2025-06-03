@@ -24,7 +24,7 @@ export class PaginationProvider {
       take: limit,
     });
 
-    // new uel
+    // new url
     const baseUrl =
       this.request.protocol + '://' + this.request.headers.host + '/';
 

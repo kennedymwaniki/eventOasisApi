@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { EventRegistration } from 'src/event_registration/entities/event_registration.entity';
 import { PaymentStatus } from 'src/payments/enum/paymentEnum';
 import {
@@ -10,6 +11,7 @@ import {
 
 @Entity()
 export class Payment {
+  @ApiProperty()
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -19,9 +21,11 @@ export class Payment {
   )
   registeredEvent: EventRegistration;
 
+  @ApiProperty()
   @Column()
   amount: number;
 
+  @ApiProperty()
   @Column({
     type: 'enum',
     enum: PaymentStatus,

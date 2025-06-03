@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import { ApiProperty } from '@nestjs/swagger';
 import { Event } from 'src/events/entities/event.entity';
 import { User } from 'src/users/entities/user.entity';
 import {
@@ -11,6 +12,7 @@ import {
 
 @Entity()
 export class Feedback {
+  @ApiProperty()
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -20,6 +22,7 @@ export class Feedback {
   @ManyToOne(() => User, (user) => user.feedbacks)
   user: User;
 
+  @ApiProperty()
   @Column({
     type: 'int',
     nullable: false,
@@ -27,9 +30,11 @@ export class Feedback {
   })
   rating: number;
 
+  @ApiProperty()
   @Column({ type: 'text' })
   comments: string;
 
+  @ApiProperty()
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   created_at: Date;
 }

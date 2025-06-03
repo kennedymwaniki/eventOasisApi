@@ -7,14 +7,17 @@ import { FeedbackModule } from './feedback/feedback.module';
 import { EventRegistrationModule } from './event_registration/event_registration.module';
 import { PaymentsModule } from './payments/payments.module';
 import { TicketsModule } from './tickets/tickets.module';
-
+import { CacheableMemory } from 'cacheable';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import databaseConfig from './config/databaseConfig';
 import { LoggerMiddleware } from './logger.middleware';
 import { PaginationModule } from './config/pagination/pagination.module';
-
+import { CachingModule } from './caching/caching.module';
+import { CacheModule, CacheInterceptor } from '@nestjs/cache-manager';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { createKeyv, Keyv } from '@keyv/redis';
 @Module({
   imports: [
     UsersModule,
@@ -22,11 +25,31 @@ import { PaginationModule } from './config/pagination/pagination.module';
     FeedbackModule,
     EventRegistrationModule,
     PaymentsModule,
+    AuthModule,
+    PaginationModule,
+    CachingModule,
     TicketsModule,
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: '.env',
       load: [databaseConfig], // path to the environment variables file
+    }),
+    CacheModule.registerAsync({
+      isGlobal: true,
+      useFactory: () => {
+        return {
+          ttl: 60000, // 60 sec: Cache time-to-live
+          stores: [
+            new Keyv({
+              store: new CacheableMemory({
+                ttl: 60 * 60 * 1000,
+                lruSize: 5000,
+              }),
+            }),
+            createKeyv('redis://default:123456789!@localhost:6379'),
+          ],
+        };
+      },
     }),
 
     TypeOrmModule.forRootAsync({
@@ -43,13 +66,15 @@ import { PaginationModule } from './config/pagination/pagination.module';
         synchronize: true, // automatically creates the database schema
       }),
     }),
-
-    AuthModule,
-
-    PaginationModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: CacheInterceptor,
+    },
+  ],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

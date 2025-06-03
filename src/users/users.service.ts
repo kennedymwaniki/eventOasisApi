@@ -4,12 +4,17 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
+import { PaginationProvider } from 'src/config/pagination/providers/pagination.provider';
+import { PaginatedQueryDto } from 'src/config/pagination/providers/dtos/paginatedQuery.dto';
+import { Paginated } from 'src/config/pagination/providers/interfaces/paginated.interface';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User)
     private usersRepository: Repository<User>,
+
+    private readonly paginationProvider: PaginationProvider,
   ) {}
 
   async create(createUserDto: CreateUserDto): Promise<User> {
@@ -26,8 +31,11 @@ export class UsersService {
     return this.usersRepository.save(user);
   }
 
-  async findAll(): Promise<User[]> {
-    return this.usersRepository.find();
+  async findAll(paginatedQuery: PaginatedQueryDto): Promise<Paginated<User>> {
+    return this.paginationProvider.paginatedQuery(
+      paginatedQuery,
+      this.usersRepository,
+    );
   }
 
   async findOne(id: number): Promise<User> {

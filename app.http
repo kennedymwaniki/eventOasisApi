@@ -1,0 +1,22 @@
+@url = http://localhost:8000
+
+###############################################
+# Cache
+###############################################
+
+### Set a cached value with a key and TTL (time to live)
+POST {{url}}/caching
+Content-Type: application/json
+
+{
+  "key": "example_key",
+  "value": "example_value",
+  "ttl": 30
+}
+
+// events 
+
+GET {{url}}/caching
+
+
+GET {{url}}/users
