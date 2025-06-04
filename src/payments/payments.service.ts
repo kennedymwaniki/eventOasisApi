@@ -31,7 +31,7 @@ export class PaymentsService {
     }
 
     const newPayment = this.paymentRepository.create({
-      ...CreatePaymentDto,
+      ...createPaymentDto,
       registeredEvent: registeredEvent,
     });
     return this.paymentRepository.save(newPayment);

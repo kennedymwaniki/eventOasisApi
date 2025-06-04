@@ -1,0 +1,33 @@
+### Create Feedback
+POST http://localhost:8000/feedback
+Content-Type: application/json
+Authorization: Bearer {{access_token}}
+
+{
+  "eventId": 1,
+  "userId": 1,
+  "rating": 5,
+  "comments": "Great event! Well organized and very informative."
+}
+
+### Get All Feedback
+GET http://localhost:8000/feedback
+Authorization: Bearer {{access_token}}
+
+### Get Feedback by ID
+GET http://localhost:8000/feedback/1
+Authorization: Bearer {{access_token}}
+
+### Update Feedback
+PATCH http://localhost:8000/feedback/1
+Content-Type: application/json
+Authorization: Bearer {{access_token}}
+
+{
+  "rating": 4,
+  "comments": "Good event overall, but the catering could be improved."
+}
+
+### Delete Feedback
+DELETE http://localhost:8000/feedback/1
+Authorization: Bearer {{access_token}}

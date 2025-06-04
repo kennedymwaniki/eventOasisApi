@@ -1,13 +1,16 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { IsOptional, IsPositive } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsInt, IsOptional } from 'class-validator';
 
 export class PaginatedQueryDto {
   @ApiPropertyOptional()
-  @IsPositive()
+  @IsInt()
   @IsOptional()
-  limit?: number;
+  @Type(() => Number)
+  limit?: number = 10;
 
-  @IsPositive()
+  @IsInt()
   @IsOptional()
-  page?: number;
+  @Type(() => Number)
+  page?: number = 1;
 }

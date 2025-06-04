@@ -16,8 +16,11 @@ import { LoggerMiddleware } from './logger.middleware';
 import { PaginationModule } from './config/pagination/pagination.module';
 import { CachingModule } from './caching/caching.module';
 import { CacheModule, CacheInterceptor } from '@nestjs/cache-manager';
-import { APP_INTERCEPTOR } from '@nestjs/core';
+import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { createKeyv, Keyv } from '@keyv/redis';
+import { AcesstokenGuard } from './auth/guards/Accesstokenguard';
+import { LogsService } from './logs/logs.service';
+import { LogsModule } from './logs/logs.module';
 @Module({
   imports: [
     UsersModule,
@@ -66,6 +69,8 @@ import { createKeyv, Keyv } from '@keyv/redis';
         synchronize: true, // automatically creates the database schema
       }),
     }),
+
+    LogsModule,
   ],
   controllers: [AppController],
   providers: [
@@ -74,6 +79,11 @@ import { createKeyv, Keyv } from '@keyv/redis';
       provide: APP_INTERCEPTOR,
       useClass: CacheInterceptor,
     },
+    {
+      provide: APP_GUARD,
+      useClass: AcesstokenGuard, // Global guard to protect routes
+    },
+    LogsService,
   ],
 })
 export class AppModule implements NestModule {

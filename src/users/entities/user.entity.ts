@@ -43,6 +43,9 @@ export class User {
   })
   phone!: string;
 
+  @Column({ type: 'text', nullable: true, default: null })
+  hashedRefreshToken?: string | null;
+
   @Column({
     type: 'enum',
     enum: UserRole,

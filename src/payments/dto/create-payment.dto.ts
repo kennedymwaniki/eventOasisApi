@@ -1,5 +1,5 @@
-import { IsDateString, IsEnum, IsInt } from 'class-validator';
-import { PaymentMethod } from '../enum/paymentEnum';
+import { IsDateString, IsEnum, IsInt, IsString } from 'class-validator';
+import { PaymentMethod, PaymentStatus } from '../enum/paymentEnum';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreatePaymentDto {
@@ -15,7 +15,15 @@ export class CreatePaymentDto {
   @IsInt()
   amount: number;
 
+  @IsString()
+  @ApiProperty()
+  transaction_id: string;
+
   @ApiProperty()
   @IsEnum(PaymentMethod)
-  payment_method: PaymentMethod;
+  paymentMethod: PaymentMethod;
+
+  @ApiProperty()
+  @IsEnum(PaymentStatus)
+  paymentstatus: PaymentStatus;
 }

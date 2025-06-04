@@ -1,5 +1,13 @@
 ###
+@access_token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoianVsaWFAZ21haWwuY29tIiwicm9sZSI6InVzZXIiLCJpYXQiOjE3NDkwNjc2MDQsImV4cCI6MTc0OTA3MTIwNH0.vk2HLsb99TUCLQcQLzFlfK11pavHQJPPPVVzHM2Bii8
+GET http://localhost:8000/users/1
+Authorization: Bearer {{access_token}}
+
+GET http://localhost:8000/users?limit=1&page=1
+
 GET http://localhost:8000/users
+  ?limit=2
+  &page=1
 
 
 
@@ -8,9 +16,32 @@ POST http://localhost:8000/users
 Content-Type: application/json
 
 {
-    "name": "Jane Doe",
-    "email": "jane@gmail.com",
+    "name": "jimmy doe",
+    "email": "jimmy@gmail.com",
     "password": "Password123!",
     "phone": "123-456-7890",
-    "role": "organiser"
+    "role": "user"
+}
+
+
+
+### Update User
+PATCH http://localhost:8000/users/1
+Authorization: Bearer {{access_token}}
+Content-Type: application/json
+
+{
+  "id": 1,
+  "name": "John Updated",
+  "password": "Password123!"
+}
+
+
+### John login
+POST http://localhost:8000/auth/login
+Content-Type: application/json
+
+{
+  "email": "john@gmail.com",
+  "password": "Password123!"
 }

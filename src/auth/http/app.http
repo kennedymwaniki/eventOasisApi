@@ -1,0 +1,22 @@
+### User Registration
+POST http://localhost:8000/users
+Content-Type: application/json
+
+{
+    "name": "julia Doe",
+    "email": "julia@gmail.com",
+    "password": "Password123!",
+    "phone": "123-456-7890",
+    "role": "user"
+}
+
+
+
+### User Login
+POST http://localhost:8000/auth/login
+Content-Type: application/json
+
+{
+    "email": "julia@gmail.com",
+    "password": "Password123!"
+}

@@ -22,3 +22,39 @@ Content-Type: application/json
   "paymentStatus": "COMPLETED",
   "amount": 350
 }
+
+
+###! COORRECT OPERATIONS
+
+### Create Event Registration
+POST http://localhost:8000/eventsRegistration
+Content-Type: application/json
+Authorization: Bearer {{access_token}}
+
+{
+  "userId": 1,
+  "eventId": 1,
+  "registration_date": "2024-11-01T10:30:00.000Z",
+  "payment_status": "pending"
+}
+
+### Get All Event Registrations
+GET http://localhost:8000/eventsRegistration
+Authorization: Bearer {{access_token}}
+
+### Get Event Registration by ID
+GET http://localhost:8000/eventsRegistration/1
+Authorization: Bearer {{access_token}}
+
+### Update Event Registration
+PATCH http://localhost:8000/eventsRegistration/1
+Content-Type: application/json
+Authorization: Bearer {{access_token}}
+
+{
+  "payment_status": "completed"
+}
+
+### Delete Event Registration
+DELETE http://localhost:8000/eventsRegistration/1
+Authorization: Bearer {{access_token}}

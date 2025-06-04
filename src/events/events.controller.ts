@@ -17,6 +17,7 @@ import { UpdateEventDto } from './dto/update-event.dto';
 import { Event } from './entities/event.entity';
 import { PaginatedQueryDto } from 'src/config/pagination/providers/dtos/paginatedQuery.dto';
 import { Paginated } from 'src/config/pagination/providers/interfaces/paginated.interface';
+import { Public } from 'src/auth/decorators/public.decorator';
 
 @Controller('events')
 export class EventsController {
@@ -29,6 +30,7 @@ export class EventsController {
   }
 
   @Get()
+  @Public()
   async findAll(
     @Query() paginationQuery: PaginatedQueryDto,
   ): Promise<Paginated<Event>> {
@@ -37,8 +39,8 @@ export class EventsController {
 
   @Get(':id')
   @HttpCode(HttpStatus.OK)
-  async findOne(@Param('id', ParseIntPipe) id: string): Promise<Event> {
-    return await this.eventsService.findOne(+id);
+  async findOne(@Param('id', ParseIntPipe) id: number): Promise<Event> {
+    return await this.eventsService.findOne(id);
   }
 
   @Patch(':id')

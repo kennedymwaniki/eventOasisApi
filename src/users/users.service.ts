@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -7,6 +11,7 @@ import { User } from './entities/user.entity';
 import { PaginationProvider } from 'src/config/pagination/providers/pagination.provider';
 import { PaginatedQueryDto } from 'src/config/pagination/providers/dtos/paginatedQuery.dto';
 import { Paginated } from 'src/config/pagination/providers/interfaces/paginated.interface';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
@@ -26,6 +31,13 @@ export class UsersService {
         `User with email ${createUserDto.email} already exists`,
       );
     }
+
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(
+      createUserDto.password,
+      saltRounds,
+    );
+    createUserDto.password = hashedPassword;
 
     const user = this.usersRepository.create(createUserDto);
     return this.usersRepository.save(user);
@@ -49,10 +61,30 @@ export class UsersService {
   async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
     const user = await this.findOne(id);
 
-    // Update user properties
-    Object.assign(user, updateUserDto);
+    if (!user) {
+      throw new NotFoundException(`User with ID ${id} not found`);
+    }
+    // check if a new password is provided
+    if (updateUserDto.password) {
+      const saltRounds = 10;
+      updateUserDto.password = await bcrypt.hash(
+        updateUserDto.password,
+        saltRounds,
+      );
+      await this.usersRepository.update(id, updateUserDto).then(() => {
+        return this.usersRepository.findOneBy({ id });
+      });
+    }
 
-    return this.usersRepository.save(user);
+    return this.usersRepository.update(id, updateUserDto).then(async () => {
+      const updatedUser = await this.usersRepository.findOneBy({ id });
+      if (!updatedUser) {
+        throw new NotFoundException(
+          `User with ID ${id} not found after update`,
+        );
+      }
+      return updatedUser;
+    });
   }
 
   async remove(id: number): Promise<void> {
@@ -61,5 +93,42 @@ export class UsersService {
     if (result.affected === 0) {
       throw new NotFoundException(`User with ID ${id} not found`);
     }
+  }
+
+  public async findUserByEmail(email: string) {
+    const User = await this.usersRepository.findOne({
+      where: { email: email },
+    });
+    if (!User) {
+      console.log('User not found');
+      throw new BadRequestException(`A user with such an email does not exist`);
+    }
+    console.log(`User with email ${email} found`);
+    return User;
+  }
+
+  private async hashData(data: string): Promise<string> {
+    const salt = await bcrypt.genSalt(10);
+    return await bcrypt.hash(data, salt);
+  }
+
+  public async saveRefreshToken(userId: number, refreshToken: string) {
+    const hashedRefreshToken = await this.hashData(refreshToken);
+
+    await this.usersRepository.update(userId, {
+      hashedRefreshToken: hashedRefreshToken,
+    });
+  }
+
+  async signOut(userId: string) {
+    // set user refresh token to null
+    const res = await this.usersRepository.update(userId, {
+      hashedRefreshToken: null,
+    });
+
+    if (res.affected === 0) {
+      throw new NotFoundException(`User with ID ${userId} not found`);
+    }
+    return { message: `User with id : ${userId} signed out successfully` };
   }
 }

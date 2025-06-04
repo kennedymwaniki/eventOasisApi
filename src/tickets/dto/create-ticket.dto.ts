@@ -9,8 +9,8 @@ import { TicketStatus } from '../enum/ticketStatusEnum';
 
 export class CreateTicketDto {
   @IsString()
-  @IsOptional()
-  ticketNumber?: string; // Can be auto-generated if not provided
+  // @IsOptional()
+  ticketNumber: string; // Can be auto-generated if not provided
 
   @IsInt()
   @IsNotEmpty()

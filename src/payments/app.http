@@ -1,0 +1,36 @@
+
+
+### Create Payment
+POST http://localhost:8000/payments
+Content-Type: application/json
+Authorization: Bearer {{access_token}}
+
+{
+  "registrationId": 1,
+  "amount": 99.99,
+  "payment_date": "2024-11-05T14:30:00.000Z",
+  "payment_method": "credit_card",
+  "transaction_id": "txn_123456789"
+}
+
+### Get All Payments
+GET http://localhost:8000/payments
+Authorization: Bearer {{access_token}}
+
+### Get Payment by ID
+GET http://localhost:8000/payments/1
+Authorization: Bearer {{access_token}}
+
+### Update Payment
+PATCH http://localhost:8000/payments/1
+Content-Type: application/json
+Authorization: Bearer {{access_token}}
+
+{
+  "payment_method": "paypal",
+  "transaction_id": "txn_updated123456"
+}
+
+### Delete Payment
+DELETE http://localhost:8000/payments/1
+Authorization: Bearer {{access_token}}
