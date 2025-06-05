@@ -1,5 +1,5 @@
 ###
-@access_token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoianVsaWFAZ21haWwuY29tIiwicm9sZSI6InVzZXIiLCJpYXQiOjE3NDkwNjc2MDQsImV4cCI6MTc0OTA3MTIwNH0.vk2HLsb99TUCLQcQLzFlfK11pavHQJPPPVVzHM2Bii8
+@access_token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoianVsaWFAZ21haWwuY29tIiwicm9sZSI6InVzZXIiLCJpYXQiOjE3NDkwNzI5MTMsImV4cCI6MTc0OTA3NjUxM30.hWiZGciQj62n77fRS7zvfTkspbrysv58LhaQ1Hv2Pqk
 GET http://localhost:8000/users/1
 Authorization: Bearer {{access_token}}
 

@@ -1,9 +1,11 @@
-@access_token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoianVsaWFAZ21haWwuY29tIiwicm9sZSI6InVzZXIiLCJpYXQiOjE3NDkwNzI5MTMsImV4cCI6MTc0OTA3NjUxM30.hWiZGciQj62n77fRS7zvfTkspbrysv58LhaQ1Hv2Pqk
+@access_token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoianVsaWFAZ21haWwuY29tIiwicm9sZSI6InVzZXIiLCJpYXQiOjE3NDkxMDQ4NDcsImV4cCI6MTc0OTEwODQ0N30.DHJHmFhYq71Hg83fjkHxGqoL6PmaTp_6PwNjHzTeh2k
 GET http://localhost:8000/events
     ?limit=2
     &page=1
 
-
+### Get Event Details
+GET http://localhost:8000/events/1
+Authorization : Bearer {{access_token}}
 
 ###
 POST http://localhost:8000/events

@@ -1,3 +1,7 @@
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoianVsaWFAZ21haWwuY29tIiwicm9sZSI6InVzZXIiLCJpYXQiOjE3NDkxMDM2MDUsImV4cCI6MTc0OTEwNzIwNX0.zuPZFR5ILPiyviwugijw8ge0wCdTgiTefmY4BsNGExw,
+@refreshToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoianVsaWFAZ21haWwuY29tIiwiaWF0IjoxNzQ5MTAzNjA1LCJleHAiOjE3NDkxMDQyMDl9.czPdnsBj5qaWRMTT8Fus88rKqycG-IEs2itIyzP_sU4,
+@url = http://localhost:8000
+
 ### User Registration
 POST http://localhost:8000/users
 Content-Type: application/json
@@ -20,3 +24,19 @@ Content-Type: application/json
     "email": "julia@gmail.com",
     "password": "Password123!"
 }
+
+
+
+
+GET {{url}}/auth/refresh
+Authorization: Bearer {{refreshToken}}
+
+
+
+GET {{url}}/auth/signout/1
+Authorization: Bearer {{refreshToken}}
+
+
+### Get User Profile
+GET {{url}}/auth/refresh
+Authorization: Bearer {{refreshToken}}
