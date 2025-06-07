@@ -28,6 +28,48 @@
     .post { background-color: #dcfce7; color: #166534; }
     .put { background-color: #fef3c7; color: #92400e; }
     .delete { background-color: #fee2e2; color: #b91c1c; }
+    .patch { background-color: #f3e8ff; color: #7c3aed; }
+    
+    .flow-item {
+      transition: all 0.3s ease;
+    }
+    .flow-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+    
+    .ticket {
+      background: linear-gradient(135deg, #a855f7, #8b5cf6, #7c3aed);
+      border-radius: 12px;
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .ticket::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 60px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+    }
+    
+    .qr-code {
+      width: 80px;
+      height: 80px;
+      background: #fff;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #7c3aed;
+      font-size: 12px;
+      text-align: center;
+      line-height: 1.2;
+    }
   </style>
 </head>
 <body class="bg-gradient-to-br from-slate-50 to-blue-50 min-h-screen">
@@ -39,24 +81,181 @@
       </div>
       <h1 class="text-5xl font-bold text-slate-800 mb-2">EventOasis API</h1>
       <p class="text-xl text-slate-600 max-w-2xl mx-auto">
-        A comprehensive API for event management, ticketing, and user registration
+        A comprehensive API for event management, ticketing, and user registration with secure authentication
       </p>
       <div class="mt-6 flex justify-center gap-4">
         <a href="/api" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium flex items-center gap-2 transition-all">
           <i class="fas fa-book"></i> Swagger Documentation
         </a>
-        <a href="https://github.com/your-username/eventoasis" target="_blank" class="bg-slate-800 hover:bg-slate-900 text-white px-6 py-3 rounded-lg font-medium flex items-center gap-2 transition-all">
+        <a href="https://github.com/kennedymwaniki/eventOasisApi" target="_blank" class="bg-slate-800 hover:bg-slate-900 text-white px-6 py-3 rounded-lg font-medium flex items-center gap-2 transition-all">
           <i class="fab fa-github"></i> GitHub Repository
         </a>
       </div>
     </header>
 
+    <!-- Authentication Notice -->
+    <section class="bg-amber-50 border-l-4 border-amber-500 p-6 mb-10 rounded-r-lg">
+      <div class="flex items-center mb-3">
+        <i class="fas fa-shield-alt text-amber-600 text-2xl mr-3"></i>
+        <h3 class="text-xl font-bold text-amber-800">Authentication Required</h3>
+      </div>
+      <p class="text-amber-700 mb-4">
+        <strong>Important:</strong> All API endpoints (except registration and login) require authentication. 
+        You must first register/login to obtain an access token, then include it in the Authorization header as: 
+        <code class="bg-amber-100 px-2 py-1 rounded">Bearer YOUR_ACCESS_TOKEN</code>
+      </p>
+      <div class="bg-amber-100 p-4 rounded-lg">
+        <p class="text-sm text-amber-800">
+          <i class="fas fa-info-circle mr-2"></i>
+          Access tokens expire after a certain period. Use the refresh token endpoint to get a new access token without re-authentication.
+        </p>
+      </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="bg-white rounded-xl shadow-md p-8 mb-10">
+      <h2 class="text-3xl font-bold text-slate-800 mb-6">How It Works</h2>
+      
+      <!-- User Roles -->
+      <div class="mb-8">
+        <h3 class="text-2xl font-bold text-slate-700 mb-4">User Roles</h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="bg-red-50 p-5 rounded-lg text-center">
+            <i class="fas fa-crown text-red-600 text-3xl mb-3"></i>
+            <h4 class="text-lg font-semibold text-slate-800 mb-2">Admin</h4>
+            <p class="text-slate-600 text-sm">Full system control, user management, and oversight of all operations</p>
+          </div>
+          <div class="bg-blue-50 p-5 rounded-lg text-center">
+            <i class="fas fa-user-tie text-blue-600 text-3xl mb-3"></i>
+            <h4 class="text-lg font-semibold text-slate-800 mb-2">Organizer</h4>
+            <p class="text-slate-600 text-sm">Create, manage, and handle all event-related operations</p>
+          </div>
+          <div class="bg-green-50 p-5 rounded-lg text-center">
+            <i class="fas fa-user text-green-600 text-3xl mb-3"></i>
+            <h4 class="text-lg font-semibold text-slate-800 mb-2">User</h4>
+            <p class="text-slate-600 text-sm">Register for events, make payments, and receive tickets</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Application Flow -->
+      <div class="mb-8">
+        <h3 class="text-2xl font-bold text-slate-700 mb-6">Application Flow</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          
+          <!-- Step 1: Registration -->
+          <div class="flow-item bg-purple-50 p-4 rounded-lg text-center">
+            <i class="fas fa-user-plus text-purple-600 text-2xl mb-3"></i>
+            <h4 class="font-semibold text-slate-800 mb-2">1. Register</h4>
+            <p class="text-sm text-slate-600">User creates account with email and password</p>
+          </div>
+
+          <!-- Step 2: Login -->
+          <div class="flow-item bg-blue-50 p-4 rounded-lg text-center">
+            <i class="fas fa-sign-in-alt text-blue-600 text-2xl mb-3"></i>
+            <h4 class="font-semibold text-slate-800 mb-2">2. Login</h4>
+            <p class="text-sm text-slate-600">Authenticate and receive access token</p>
+          </div>
+
+          <!-- Step 3: Browse Events -->
+          <div class="flow-item bg-green-50 p-4 rounded-lg text-center">
+            <i class="fas fa-calendar-alt text-green-600 text-2xl mb-3"></i>
+            <h4 class="font-semibold text-slate-800 mb-2">3. Browse Events</h4>
+            <p class="text-sm text-slate-600">View available events and details</p>
+          </div>
+
+          <!-- Step 4: Register for Event -->
+          <div class="flow-item bg-orange-50 p-4 rounded-lg text-center">
+            <i class="fas fa-clipboard-list text-orange-600 text-2xl mb-3"></i>
+            <h4 class="font-semibold text-slate-800 mb-2">4. Register</h4>
+            <p class="text-sm text-slate-600">Register for desired event</p>
+          </div>
+
+          <!-- Step 5: Payment -->
+          <div class="flow-item bg-red-50 p-4 rounded-lg text-center">
+            <i class="fas fa-credit-card text-red-600 text-2xl mb-3"></i>
+            <h4 class="font-semibold text-slate-800 mb-2">5. Payment</h4>
+            <p class="text-sm text-slate-600">Process payment for event registration</p>
+          </div>
+
+          <!-- Step 6: Receive Ticket -->
+          <div class="flow-item bg-indigo-50 p-4 rounded-lg text-center">
+            <i class="fas fa-ticket-alt text-indigo-600 text-2xl mb-3"></i>
+            <h4 class="font-semibold text-slate-800 mb-2">6. Get Ticket</h4>
+            <p class="text-sm text-slate-600">Receive digital ticket with QR code</p>
+          </div>
+
+          <!-- Step 7: Attend Event -->
+          <div class="flow-item bg-teal-50 p-4 rounded-lg text-center">
+            <i class="fas fa-qrcode text-teal-600 text-2xl mb-3"></i>
+            <h4 class="font-semibold text-slate-800 mb-2">7. Attend</h4>
+            <p class="text-sm text-slate-600">Present QR code at event venue</p>
+          </div>
+
+          <!-- Step 8: Feedback -->
+          <div class="flow-item bg-pink-50 p-4 rounded-lg text-center">
+            <i class="fas fa-star text-pink-600 text-2xl mb-3"></i>
+            <h4 class="font-semibold text-slate-800 mb-2">8. Feedback</h4>
+            <p class="text-sm text-slate-600">Rate and review the event experience</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sample Ticket -->
+      <div class="mb-8">
+        <h3 class="text-2xl font-bold text-slate-700 mb-4">Sample Event Ticket</h3>
+        <div class="max-w-md mx-auto">
+          <div class="ticket p-6 shadow-lg">
+            <div class="relative z-10">
+              <div class="flex justify-between items-start mb-4">
+                <div>
+                  <h4 class="text-xl font-bold text-white mb-1">Tech Conference 2025</h4>
+                  <p class="text-purple-100 text-sm">Annual Technology Summit</p>
+                </div>
+                <div class="qr-code">
+                  <i class="fas fa-qrcode text-2xl"></i>
+                  <div class="text-xs mt-1">QR Code</div>
+                </div>
+              </div>
+              
+              <div class="space-y-2 text-sm">
+                <div class="flex justify-between">
+                  <span class="text-purple-200">Date:</span>
+                  <span class="text-white font-medium">Sept 15, 2025</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-purple-200">Time:</span>
+                  <span class="text-white font-medium">10:00 AM</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-purple-200">Venue:</span>
+                  <span class="text-white font-medium">Convention Center</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-purple-200">Amount Paid:</span>
+                  <span class="text-white font-medium">$99.99</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-purple-200">Ticket ID:</span>
+                  <span class="text-white font-medium">#TKT-2025-001</span>
+                </div>
+              </div>
+              
+              <div class="mt-4 pt-4 border-t border-purple-400 text-center">
+                <p class="text-purple-100 text-xs">Present this QR code at the venue entrance</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- About Section -->
     <section class="bg-white rounded-xl shadow-md p-8 mb-10">
       <h2 class="text-3xl font-bold text-slate-800 mb-4">About EventOasis</h2>
       <p class="text-slate-600 mb-4">
-        EventOasis is a RESTful API built with NestJS that provides a complete solution for managing events, 
-        user registrations, tickets, payments, and feedback. It features role-based authentication, 
+        EventOasis is a secure RESTful API built with NestJS that provides a complete solution for managing events, 
+        user registrations, tickets, payments, and feedback. It features JWT-based authentication, role-based access control, 
         caching strategies, and comprehensive data validation.
       </p>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
@@ -76,10 +275,10 @@
         </div>
         <div class="bg-amber-50 p-5 rounded-lg">
           <div class="text-amber-600 mb-2 text-2xl">
-            <i class="fas fa-users"></i>
+            <i class="fas fa-shield-alt"></i>
           </div>
-          <h3 class="text-lg font-semibold text-slate-800 mb-2">User Management</h3>
-          <p class="text-slate-600">Register users, handle authentication, and manage user profiles with role-based access control.</p>
+          <h3 class="text-lg font-semibold text-slate-800 mb-2">Secure Authentication</h3>
+          <p class="text-slate-600">JWT-based authentication with refresh tokens and role-based access control for enhanced security.</p>
         </div>
       </div>
     </section>
@@ -95,6 +294,21 @@
         </h3>
         <div class="endpoint">
           <span class="method post">POST</span>
+          <span class="font-medium">/auth/register</span>
+          <div class="mt-2">
+            <p class="text-sm text-slate-600 mb-2">Register a new user account</p>
+            <pre class="request-text bg-slate-50 p-3 rounded text-sm overflow-x-auto">
+{
+  "name": "John Doe",
+  "email": "john@example.com",
+  "password": "securepassword",
+  "phone": "123-456-7890",
+  "role": "user"
+}</pre>
+          </div>
+        </div>
+        <div class="endpoint">
+          <span class="method post">POST</span>
           <span class="font-medium">/auth/login</span>
           <div class="mt-2">
             <p class="text-sm text-slate-600 mb-2">Log in with email and password to get access token</p>
@@ -107,17 +321,19 @@
         </div>
         <div class="endpoint">
           <span class="method post">POST</span>
-          <span class="font-medium">/auth/register</span>
+          <span class="font-medium">/auth/refresh</span>
           <div class="mt-2">
-            <p class="text-sm text-slate-600 mb-2">Register a new user account</p>
+            <p class="text-sm text-slate-600 mb-2">Refresh access token using refresh token</p>
             <pre class="request-text bg-slate-50 p-3 rounded text-sm overflow-x-auto">
 {
-  "name": "John Doe",
-  "email": "john@example.com",
-  "password": "securepassword",
-  "role": "user"
+  "refreshToken": "your-refresh-token-here"
 }</pre>
           </div>
+        </div>
+        <div class="endpoint">
+          <span class="method post">POST</span>
+          <span class="font-medium">/auth/logout</span>
+          <p class="text-sm text-slate-600 mt-2">Logout and invalidate tokens (requires Authorization header)</p>
         </div>
       </div>
 
@@ -126,6 +342,10 @@
         <h3 class="text-2xl font-bold text-slate-700 mb-4 flex items-center gap-2">
           <i class="fas fa-user text-green-600"></i> Users
         </h3>
+        <p class="text-sm text-red-600 mb-4 bg-red-50 p-3 rounded-lg">
+          <i class="fas fa-exclamation-triangle mr-2"></i>
+          <strong>Authentication Required:</strong> All user endpoints require a valid access token in the Authorization header.
+        </p>
         <div class="endpoint">
           <span class="method get">GET</span>
           <span class="font-medium">/users</span>
@@ -140,7 +360,7 @@
           <span class="method post">POST</span>
           <span class="font-medium">/users</span>
           <div class="mt-2">
-            <p class="text-sm text-slate-600 mb-2">Create a new user</p>
+            <p class="text-sm text-slate-600 mb-2">Create a new user (Admin only)</p>
             <pre class="request-text bg-slate-50 p-3 rounded text-sm overflow-x-auto">
 {
   "name": "Kenny Doe",
@@ -151,14 +371,14 @@
           </div>
         </div>
         <div class="endpoint">
-          <span class="method put">PUT</span>
+          <span class="method patch">PATCH</span>
           <span class="font-medium">/users/:id</span>
           <p class="text-sm text-slate-600 mt-2">Update a user's information</p>
         </div>
         <div class="endpoint">
           <span class="method delete">DELETE</span>
           <span class="font-medium">/users/:id</span>
-          <p class="text-sm text-slate-600 mt-2">Delete a user</p>
+          <p class="text-sm text-slate-600 mt-2">Delete a user (Admin only)</p>
         </div>
       </div>
 
@@ -167,41 +387,44 @@
         <h3 class="text-2xl font-bold text-slate-700 mb-4 flex items-center gap-2">
           <i class="fas fa-calendar-day text-purple-600"></i> Events
         </h3>
+        <p class="text-sm text-red-600 mb-4 bg-red-50 p-3 rounded-lg">
+          <i class="fas fa-exclamation-triangle mr-2"></i>
+          <strong>Authentication Required:</strong> Creating, updating, and deleting events require Organizer or Admin role.
+        </p>
         <div class="endpoint">
           <span class="method get">GET</span>
           <span class="font-medium">/events</span>
-          <p class="text-sm text-slate-600 mt-2">Get a list of all events with pagination</p>
+          <p class="text-sm text-slate-600 mt-2">Get a list of all events with pagination (Public endpoint)</p>
         </div>
         <div class="endpoint">
           <span class="method get">GET</span>
           <span class="font-medium">/events/:id</span>
-          <p class="text-sm text-slate-600 mt-2">Get a specific event by ID</p>
+          <p class="text-sm text-slate-600 mt-2">Get a specific event by ID (Public endpoint)</p>
         </div>
         <div class="endpoint">
           <span class="method post">POST</span>
           <span class="font-medium">/events</span>
           <div class="mt-2">
-            <p class="text-sm text-slate-600 mb-2">Create a new event</p>
+            <p class="text-sm text-slate-600 mb-2">Create a new event (Organizer/Admin only)</p>
             <pre class="request-text bg-slate-50 p-3 rounded text-sm overflow-x-auto">
 {
-  "title": "Tech Conference 2025",
-  "description": "Annual technology conference",
-  "venue": "Convention Center",
-  "date": "2025-09-15T10:00:00Z",
-  "capacity": 500,
-  "ticketPrice": 99.99
+  "event_name": "Tech Conference 2025",
+  "event_description": "Annual technology conference",
+  "event_location": "Convention Center",
+  "event_date": "2025-09-15T10:00:00Z",
+  "userId": 1
 }</pre>
           </div>
         </div>
         <div class="endpoint">
-          <span class="method put">PUT</span>
+          <span class="method patch">PATCH</span>
           <span class="font-medium">/events/:id</span>
-          <p class="text-sm text-slate-600 mt-2">Update an event's information</p>
+          <p class="text-sm text-slate-600 mt-2">Update an event's information (Organizer/Admin only)</p>
         </div>
         <div class="endpoint">
           <span class="method delete">DELETE</span>
           <span class="font-medium">/events/:id</span>
-          <p class="text-sm text-slate-600 mt-2">Delete an event</p>
+          <p class="text-sm text-slate-600 mt-2">Delete an event (Organizer/Admin only)</p>
         </div>
       </div>
 
@@ -210,6 +433,10 @@
         <h3 class="text-2xl font-bold text-slate-700 mb-4 flex items-center gap-2">
           <i class="fas fa-ticket-alt text-amber-600"></i> Tickets
         </h3>
+        <p class="text-sm text-red-600 mb-4 bg-red-50 p-3 rounded-lg">
+          <i class="fas fa-exclamation-triangle mr-2"></i>
+          <strong>Authentication Required:</strong> All ticket operations require valid access token.
+        </p>
         <div class="endpoint">
           <span class="method get">GET</span>
           <span class="font-medium">/tickets</span>
@@ -224,12 +451,13 @@
           <span class="method post">POST</span>
           <span class="font-medium">/tickets</span>
           <div class="mt-2">
-            <p class="text-sm text-slate-600 mb-2">Generate a new ticket</p>
+            <p class="text-sm text-slate-600 mb-2">Generate a new ticket (after payment)</p>
             <pre class="request-text bg-slate-50 p-3 rounded text-sm overflow-x-auto">
 {
+  "ticketNumber": "TKT-2025-001",
   "eventId": 1,
   "userId": 5,
-  "ticketType": "VIP"
+  "eventRegistrationId": 1
 }</pre>
           </div>
         </div>
@@ -240,28 +468,34 @@
         <h3 class="text-2xl font-bold text-slate-700 mb-4 flex items-center gap-2">
           <i class="fas fa-clipboard-list text-blue-600"></i> Event Registration
         </h3>
+        <p class="text-sm text-red-600 mb-4 bg-red-50 p-3 rounded-lg">
+          <i class="fas fa-exclamation-triangle mr-2"></i>
+          <strong>Authentication Required:</strong> All registration operations require valid access token.
+        </p>
         <div class="endpoint">
           <span class="method post">POST</span>
-          <span class="font-medium">/event-registration</span>
+          <span class="font-medium">/eventsRegistration</span>
           <div class="mt-2">
             <p class="text-sm text-slate-600 mb-2">Register for an event</p>
             <pre class="request-text bg-slate-50 p-3 rounded text-sm overflow-x-auto">
 {
   "eventId": 1,
   "userId": 5,
-  "attendeeCount": 1
+  "registrationDate": "2025-06-07T10:00:00Z",
+  "paymentStatus": "PENDING",
+  "amount": 99.99
 }</pre>
           </div>
         </div>
         <div class="endpoint">
           <span class="method get">GET</span>
-          <span class="font-medium">/event-registration/user/:userId</span>
-          <p class="text-sm text-slate-600 mt-2">Get all events a user has registered for</p>
+          <span class="font-medium">/eventsRegistration</span>
+          <p class="text-sm text-slate-600 mt-2">Get all event registrations</p>
         </div>
         <div class="endpoint">
           <span class="method get">GET</span>
-          <span class="font-medium">/event-registration/event/:eventId</span>
-          <p class="text-sm text-slate-600 mt-2">Get all users registered for an event</p>
+          <span class="font-medium">/eventsRegistration/:id</span>
+          <p class="text-sm text-slate-600 mt-2">Get specific registration details</p>
         </div>
       </div>
 
@@ -270,23 +504,21 @@
         <h3 class="text-2xl font-bold text-slate-700 mb-4 flex items-center gap-2">
           <i class="fas fa-credit-card text-green-600"></i> Payments
         </h3>
+        <p class="text-sm text-red-600 mb-4 bg-red-50 p-3 rounded-lg">
+          <i class="fas fa-exclamation-triangle mr-2"></i>
+          <strong>Authentication Required:</strong> All payment operations require valid access token.
+        </p>
         <div class="endpoint">
           <span class="method post">POST</span>
           <span class="font-medium">/payments</span>
           <div class="mt-2">
-            <p class="text-sm text-slate-600 mb-2">Process a payment for ticket</p>
+            <p class="text-sm text-slate-600 mb-2">Process a payment for event registration</p>
             <pre class="request-text bg-slate-50 p-3 rounded text-sm overflow-x-auto">
 {
   "userId": 5,
-  "eventId": 1,
+  "eventRegistrationId": 1,
   "amount": 99.99,
-  "paymentMethod": "credit_card",
-  "cardDetails": {
-    "number": "4242424242424242",
-    "expMonth": 12,
-    "expYear": 2025,
-    "cvc": "123"
-  }
+  "paymentMethod": "credit_card"
 }</pre>
           </div>
         </div>
@@ -302,6 +534,10 @@
         <h3 class="text-2xl font-bold text-slate-700 mb-4 flex items-center gap-2">
           <i class="fas fa-comment-alt text-purple-600"></i> Feedback
         </h3>
+        <p class="text-sm text-red-600 mb-4 bg-red-50 p-3 rounded-lg">
+          <i class="fas fa-exclamation-triangle mr-2"></i>
+          <strong>Authentication Required:</strong> Submitting feedback requires valid access token.
+        </p>
         <div class="endpoint">
           <span class="method post">POST</span>
           <span class="font-medium">/feedback</span>
@@ -319,7 +555,7 @@
         <div class="endpoint">
           <span class="method get">GET</span>
           <span class="font-medium">/feedback/event/:eventId</span>
-          <p class="text-sm text-slate-600 mt-2">Get all feedback for an event</p>
+          <p class="text-sm text-slate-600 mt-2">Get all feedback for an event (Public endpoint)</p>
         </div>
       </div>
     </section>
@@ -339,25 +575,25 @@
           <p class="text-sm text-slate-500">Database</p>
         </div>
         <div class="p-4 text-center">
-          <img src="https://typeorm.io/img/logo.png" alt="TypeORM" class="h-14 mx-auto mb-3">
+          <i class="fas fa-database text-slate-600 text-5xl mb-3"></i>
           <h3 class="font-medium text-slate-800">TypeORM</h3>
           <p class="text-sm text-slate-500">ORM</p>
         </div>
         <div class="p-4 text-center">
-          <img src="https://redis.io/images/redis-logo.svg" alt="Redis" class="h-14 mx-auto mb-3">
-          <h3 class="font-medium text-slate-800">Redis</h3>
-          <p class="text-sm text-slate-500">Caching</p>
+          <i class="fas fa-key text-blue-600 text-5xl mb-3"></i>
+          <h3 class="font-medium text-slate-800">JWT</h3>
+          <p class="text-sm text-slate-500">Authentication</p>
         </div>
       </div>
     </section>
 
     <!-- Footer -->
     <footer class="text-center py-8 text-slate-600 border-t border-slate-200">
-      <p>© 2025 EventOasis API. Built with NestJS.</p>
+      <p>© 2025 EventOasis API. Built with NestJS and secured with JWT authentication.</p>
       <div class="mt-4 flex justify-center gap-4">
         <a href="/api" class="text-blue-600 hover:text-blue-800 transition-colors">API Documentation</a>
         <span class="text-slate-400">|</span>
-        <a href="https://github.com/your-username/eventoasis" class="text-blue-600 hover:text-blue-800 transition-colors">GitHub</a>
+        <a href="https://github.com/kennedymwaniki/eventOasisApi" class="text-blue-600 hover:text-blue-800 transition-colors">GitHub</a>
         <span class="text-slate-400">|</span>
         <a href="https://docs.nestjs.com" class="text-blue-600 hover:text-blue-800 transition-colors">NestJS Docs</a>
       </div>
