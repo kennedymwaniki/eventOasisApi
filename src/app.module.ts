@@ -19,9 +19,8 @@ import { APP_GUARD } from '@nestjs/core'; //! APP_INTERCEPTOR add this to restor
 // import { createKeyv, Keyv } from '@keyv/redis';
 import { AcesstokenGuard } from './auth/guards/Accesstokenguard';
 
-import { LogsModule } from './logs/logs.module';
+import { LogsModule } from 'src/logs/logs.module';
 import { PaginationModule } from './pagination/pagination.module';
-import { LogsService } from './logs/logs.service';
 @Module({
   imports: [
     UsersModule,
@@ -67,6 +66,7 @@ import { LogsService } from './logs/logs.service';
         password: configService.get<string>('DATABASE_PASSWORD'),
         database: configService.get<string>('DATABASE_NAME'),
         autoLoadEntities: true,
+        ssl: true,
         synchronize: true, // automatically creates the database schema
       }),
     }),
@@ -84,7 +84,6 @@ import { LogsService } from './logs/logs.service';
       provide: APP_GUARD,
       useClass: AcesstokenGuard, // Global guard to protect routes
     },
-    LogsService,
   ],
 })
 export class AppModule implements NestModule {
