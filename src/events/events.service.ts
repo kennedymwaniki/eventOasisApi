@@ -5,9 +5,9 @@ import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
 import { Event } from './entities/event.entity';
 import { UsersService } from 'src/users/users.service';
-import { PaginationProvider } from 'src/config/pagination/providers/pagination.provider';
-import { Paginated } from 'src/config/pagination/providers/interfaces/paginated.interface';
-import { PaginatedQueryDto } from 'src/config/pagination/providers/dtos/paginatedQuery.dto';
+import { PaginatedQueryDto } from 'src/pagination/providers/dtos/paginatedQuery.dto';
+import { Paginated } from 'src/pagination/providers/interfaces/paginated.interface';
+import { PaginationProvider } from 'src/pagination/providers/pagination.provider';
 
 @Injectable()
 export class EventsService {

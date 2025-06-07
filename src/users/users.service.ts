@@ -8,10 +8,11 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
-import { PaginationProvider } from 'src/config/pagination/providers/pagination.provider';
-import { PaginatedQueryDto } from 'src/config/pagination/providers/dtos/paginatedQuery.dto';
-import { Paginated } from 'src/config/pagination/providers/interfaces/paginated.interface';
+
 import * as bcrypt from 'bcrypt';
+import { PaginationProvider } from 'src/pagination/providers/pagination.provider';
+import { PaginatedQueryDto } from 'src/pagination/providers/dtos/paginatedQuery.dto';
+import { Paginated } from 'src/pagination/providers/interfaces/paginated.interface';
 
 @Injectable()
 export class UsersService {

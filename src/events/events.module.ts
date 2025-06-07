@@ -4,8 +4,8 @@ import { EventsService } from './events.service';
 import { EventsController } from './events.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Event } from './entities/event.entity';
+import { PaginationModule } from 'src/pagination/pagination.module';
 // import { PaginationProvider } from 'src/config/pagination/providers/pagination.provider';
-import { PaginationModule } from 'src/config/pagination/pagination.module';
 
 @Module({
   controllers: [EventsController],

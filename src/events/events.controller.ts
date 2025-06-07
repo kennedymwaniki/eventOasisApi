@@ -15,9 +15,10 @@ import { EventsService } from './events.service';
 import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
 import { Event } from './entities/event.entity';
-import { PaginatedQueryDto } from 'src/config/pagination/providers/dtos/paginatedQuery.dto';
-import { Paginated } from 'src/config/pagination/providers/interfaces/paginated.interface';
+
 import { Public } from 'src/auth/decorators/public.decorator';
+import { PaginatedQueryDto } from 'src/pagination/providers/dtos/paginatedQuery.dto';
+import { Paginated } from 'src/pagination/providers/interfaces/paginated.interface';
 
 @Controller('events')
 export class EventsController {

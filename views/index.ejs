@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EventOasis API</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    .endpoint {
+      background-color: #f3f4f6;
+      border-radius: 0.375rem;
+      padding: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+    .request-text {
+      color: #ef4444;
+      font-family: monospace;
+    }
+    .method {
+      font-weight: 600;
+      padding: 0.25rem 0.5rem;
+      border-radius: 0.25rem;
+      display: inline-block;
+      margin-right: 0.5rem;
+    }
+    .get { background-color: #dbeafe; color: #1e40af; }
+    .post { background-color: #dcfce7; color: #166534; }
+    .put { background-color: #fef3c7; color: #92400e; }
+    .delete { background-color: #fee2e2; color: #b91c1c; }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-slate-50 to-blue-50 min-h-screen">
+  <div class="container mx-auto px-4 py-8">
+    <!-- Header Section -->
+    <header class="text-center mb-12">
+      <div class="flex justify-center mb-4">
+        <img src="https://nestjs.com/img/logo-small.svg" alt="NestJS Logo" class="h-24">
+      </div>
+      <h1 class="text-5xl font-bold text-slate-800 mb-2">EventOasis API</h1>
+      <p class="text-xl text-slate-600 max-w-2xl mx-auto">
+        A comprehensive API for event management, ticketing, and user registration
+      </p>
+      <div class="mt-6 flex justify-center gap-4">
+        <a href="/api" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium flex items-center gap-2 transition-all">
+          <i class="fas fa-book"></i> Swagger Documentation
+        </a>
+        <a href="https://github.com/your-username/eventoasis" target="_blank" class="bg-slate-800 hover:bg-slate-900 text-white px-6 py-3 rounded-lg font-medium flex items-center gap-2 transition-all">
+          <i class="fab fa-github"></i> GitHub Repository
+        </a>
+      </div>
+    </header>
+
+    <!-- About Section -->
+    <section class="bg-white rounded-xl shadow-md p-8 mb-10">
+      <h2 class="text-3xl font-bold text-slate-800 mb-4">About EventOasis</h2>
+      <p class="text-slate-600 mb-4">
+        EventOasis is a RESTful API built with NestJS that provides a complete solution for managing events, 
+        user registrations, tickets, payments, and feedback. It features role-based authentication, 
+        caching strategies, and comprehensive data validation.
+      </p>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+        <div class="bg-blue-50 p-5 rounded-lg">
+          <div class="text-blue-600 mb-2 text-2xl">
+            <i class="fas fa-calendar-check"></i>
+          </div>
+          <h3 class="text-lg font-semibold text-slate-800 mb-2">Event Management</h3>
+          <p class="text-slate-600">Create, update, and manage events with detailed information including venue, timing, and capacity.</p>
+        </div>
+        <div class="bg-green-50 p-5 rounded-lg">
+          <div class="text-green-600 mb-2 text-2xl">
+            <i class="fas fa-ticket-alt"></i>
+          </div>
+          <h3 class="text-lg font-semibold text-slate-800 mb-2">Ticketing System</h3>
+          <p class="text-slate-600">Issue, validate, and manage tickets with secure QR code generation and verification.</p>
+        </div>
+        <div class="bg-amber-50 p-5 rounded-lg">
+          <div class="text-amber-600 mb-2 text-2xl">
+            <i class="fas fa-users"></i>
+          </div>
+          <h3 class="text-lg font-semibold text-slate-800 mb-2">User Management</h3>
+          <p class="text-slate-600">Register users, handle authentication, and manage user profiles with role-based access control.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- API Endpoints Section -->
+    <section class="bg-white rounded-xl shadow-md p-8 mb-10">
+      <h2 class="text-3xl font-bold text-slate-800 mb-6">API Endpoints</h2>
+
+      <!-- Authentication -->
+      <div class="mb-10">
+        <h3 class="text-2xl font-bold text-slate-700 mb-4 flex items-center gap-2">
+          <i class="fas fa-lock text-blue-600"></i> Authentication
+        </h3>
+        <div class="endpoint">
+          <span class="method post">POST</span>
+          <span class="font-medium">/auth/login</span>
+          <div class="mt-2">
+            <p class="text-sm text-slate-600 mb-2">Log in with email and password to get access token</p>
+            <pre class="request-text bg-slate-50 p-3 rounded text-sm overflow-x-auto">
+{
+  "email": "user@example.com",
+  "password": "yourpassword"
+}</pre>
+          </div>
+        </div>
+        <div class="endpoint">
+          <span class="method post">POST</span>
+          <span class="font-medium">/auth/register</span>
+          <div class="mt-2">
+            <p class="text-sm text-slate-600 mb-2">Register a new user account</p>
+            <pre class="request-text bg-slate-50 p-3 rounded text-sm overflow-x-auto">
+{
+  "name": "John Doe",
+  "email": "john@example.com",
+  "password": "securepassword",
+  "role": "user"
+}</pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- Users -->
+      <div class="mb-10">
+        <h3 class="text-2xl font-bold text-slate-700 mb-4 flex items-center gap-2">
+          <i class="fas fa-user text-green-600"></i> Users
+        </h3>
+        <div class="endpoint">
+          <span class="method get">GET</span>
+          <span class="font-medium">/users</span>
+          <p class="text-sm text-slate-600 mt-2">Get a list of users with pagination</p>
+        </div>
+        <div class="endpoint">
+          <span class="method get">GET</span>
+          <span class="font-medium">/users/:id</span>
+          <p class="text-sm text-slate-600 mt-2">Get a specific user by ID</p>
+        </div>
+        <div class="endpoint">
+          <span class="method post">POST</span>
+          <span class="font-medium">/users</span>
+          <div class="mt-2">
+            <p class="text-sm text-slate-600 mb-2">Create a new user</p>
+            <pre class="request-text bg-slate-50 p-3 rounded text-sm overflow-x-auto">
+{
+  "name": "Kenny Doe",
+  "email": "kenny@gmail.com",
+  "password": "password123",
+  "role": "user"
+}</pre>
+          </div>
+        </div>
+        <div class="endpoint">
+          <span class="method put">PUT</span>
+          <span class="font-medium">/users/:id</span>
+          <p class="text-sm text-slate-600 mt-2">Update a user's information</p>
+        </div>
+        <div class="endpoint">
+          <span class="method delete">DELETE</span>
+          <span class="font-medium">/users/:id</span>
+          <p class="text-sm text-slate-600 mt-2">Delete a user</p>
+        </div>
+      </div>
+
+      <!-- Events -->
+      <div class="mb-10">
+        <h3 class="text-2xl font-bold text-slate-700 mb-4 flex items-center gap-2">
+          <i class="fas fa-calendar-day text-purple-600"></i> Events
+        </h3>
+        <div class="endpoint">
+          <span class="method get">GET</span>
+          <span class="font-medium">/events</span>
+          <p class="text-sm text-slate-600 mt-2">Get a list of all events with pagination</p>
+        </div>
+        <div class="endpoint">
+          <span class="method get">GET</span>
+          <span class="font-medium">/events/:id</span>
+          <p class="text-sm text-slate-600 mt-2">Get a specific event by ID</p>
+        </div>
+        <div class="endpoint">
+          <span class="method post">POST</span>
+          <span class="font-medium">/events</span>
+          <div class="mt-2">
+            <p class="text-sm text-slate-600 mb-2">Create a new event</p>
+            <pre class="request-text bg-slate-50 p-3 rounded text-sm overflow-x-auto">
+{
+  "title": "Tech Conference 2025",
+  "description": "Annual technology conference",
+  "venue": "Convention Center",
+  "date": "2025-09-15T10:00:00Z",
+  "capacity": 500,
+  "ticketPrice": 99.99
+}</pre>
+          </div>
+        </div>
+        <div class="endpoint">
+          <span class="method put">PUT</span>
+          <span class="font-medium">/events/:id</span>
+          <p class="text-sm text-slate-600 mt-2">Update an event's information</p>
+        </div>
+        <div class="endpoint">
+          <span class="method delete">DELETE</span>
+          <span class="font-medium">/events/:id</span>
+          <p class="text-sm text-slate-600 mt-2">Delete an event</p>
+        </div>
+      </div>
+
+      <!-- Tickets -->
+      <div class="mb-10">
+        <h3 class="text-2xl font-bold text-slate-700 mb-4 flex items-center gap-2">
+          <i class="fas fa-ticket-alt text-amber-600"></i> Tickets
+        </h3>
+        <div class="endpoint">
+          <span class="method get">GET</span>
+          <span class="font-medium">/tickets</span>
+          <p class="text-sm text-slate-600 mt-2">Get a list of all tickets</p>
+        </div>
+        <div class="endpoint">
+          <span class="method get">GET</span>
+          <span class="font-medium">/tickets/:id</span>
+          <p class="text-sm text-slate-600 mt-2">Get a specific ticket by ID</p>
+        </div>
+        <div class="endpoint">
+          <span class="method post">POST</span>
+          <span class="font-medium">/tickets</span>
+          <div class="mt-2">
+            <p class="text-sm text-slate-600 mb-2">Generate a new ticket</p>
+            <pre class="request-text bg-slate-50 p-3 rounded text-sm overflow-x-auto">
+{
+  "eventId": 1,
+  "userId": 5,
+  "ticketType": "VIP"
+}</pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- Event Registration -->
+      <div class="mb-10">
+        <h3 class="text-2xl font-bold text-slate-700 mb-4 flex items-center gap-2">
+          <i class="fas fa-clipboard-list text-blue-600"></i> Event Registration
+        </h3>
+        <div class="endpoint">
+          <span class="method post">POST</span>
+          <span class="font-medium">/event-registration</span>
+          <div class="mt-2">
+            <p class="text-sm text-slate-600 mb-2">Register for an event</p>
+            <pre class="request-text bg-slate-50 p-3 rounded text-sm overflow-x-auto">
+{
+  "eventId": 1,
+  "userId": 5,
+  "attendeeCount": 1
+}</pre>
+          </div>
+        </div>
+        <div class="endpoint">
+          <span class="method get">GET</span>
+          <span class="font-medium">/event-registration/user/:userId</span>
+          <p class="text-sm text-slate-600 mt-2">Get all events a user has registered for</p>
+        </div>
+        <div class="endpoint">
+          <span class="method get">GET</span>
+          <span class="font-medium">/event-registration/event/:eventId</span>
+          <p class="text-sm text-slate-600 mt-2">Get all users registered for an event</p>
+        </div>
+      </div>
+
+      <!-- Payments -->
+      <div class="mb-10">
+        <h3 class="text-2xl font-bold text-slate-700 mb-4 flex items-center gap-2">
+          <i class="fas fa-credit-card text-green-600"></i> Payments
+        </h3>
+        <div class="endpoint">
+          <span class="method post">POST</span>
+          <span class="font-medium">/payments</span>
+          <div class="mt-2">
+            <p class="text-sm text-slate-600 mb-2">Process a payment for ticket</p>
+            <pre class="request-text bg-slate-50 p-3 rounded text-sm overflow-x-auto">
+{
+  "userId": 5,
+  "eventId": 1,
+  "amount": 99.99,
+  "paymentMethod": "credit_card",
+  "cardDetails": {
+    "number": "4242424242424242",
+    "expMonth": 12,
+    "expYear": 2025,
+    "cvc": "123"
+  }
+}</pre>
+          </div>
+        </div>
+        <div class="endpoint">
+          <span class="method get">GET</span>
+          <span class="font-medium">/payments/:id</span>
+          <p class="text-sm text-slate-600 mt-2">Get payment details</p>
+        </div>
+      </div>
+
+      <!-- Feedback -->
+      <div>
+        <h3 class="text-2xl font-bold text-slate-700 mb-4 flex items-center gap-2">
+          <i class="fas fa-comment-alt text-purple-600"></i> Feedback
+        </h3>
+        <div class="endpoint">
+          <span class="method post">POST</span>
+          <span class="font-medium">/feedback</span>
+          <div class="mt-2">
+            <p class="text-sm text-slate-600 mb-2">Submit feedback for an event</p>
+            <pre class="request-text bg-slate-50 p-3 rounded text-sm overflow-x-auto">
+{
+  "userId": 5,
+  "eventId": 1,
+  "rating": 5,
+  "comment": "This was an excellent event. I would definitely attend again!"
+}</pre>
+          </div>
+        </div>
+        <div class="endpoint">
+          <span class="method get">GET</span>
+          <span class="font-medium">/feedback/event/:eventId</span>
+          <p class="text-sm text-slate-600 mt-2">Get all feedback for an event</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tech Stack -->
+    <section class="bg-white rounded-xl shadow-md p-8 mb-10">
+      <h2 class="text-3xl font-bold text-slate-800 mb-6">Technology Stack</h2>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="p-4 text-center">
+          <img src="https://nestjs.com/img/logo-small.svg" alt="NestJS" class="h-14 mx-auto mb-3">
+          <h3 class="font-medium text-slate-800">NestJS</h3>
+          <p class="text-sm text-slate-500">Framework</p>
+        </div>
+        <div class="p-4 text-center">
+          <img src="https://www.postgresql.org/media/img/about/press/elephant.png" alt="PostgreSQL" class="h-14 mx-auto mb-3">
+          <h3 class="font-medium text-slate-800">PostgreSQL</h3>
+          <p class="text-sm text-slate-500">Database</p>
+        </div>
+        <div class="p-4 text-center">
+          <img src="https://typeorm.io/img/logo.png" alt="TypeORM" class="h-14 mx-auto mb-3">
+          <h3 class="font-medium text-slate-800">TypeORM</h3>
+          <p class="text-sm text-slate-500">ORM</p>
+        </div>
+        <div class="p-4 text-center">
+          <img src="https://redis.io/images/redis-logo.svg" alt="Redis" class="h-14 mx-auto mb-3">
+          <h3 class="font-medium text-slate-800">Redis</h3>
+          <p class="text-sm text-slate-500">Caching</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="text-center py-8 text-slate-600 border-t border-slate-200">
+      <p>© 2025 EventOasis API. Built with NestJS.</p>
+      <div class="mt-4 flex justify-center gap-4">
+        <a href="/api" class="text-blue-600 hover:text-blue-800 transition-colors">API Documentation</a>
+        <span class="text-slate-400">|</span>
+        <a href="https://github.com/your-username/eventoasis" class="text-blue-600 hover:text-blue-800 transition-colors">GitHub</a>
+        <span class="text-slate-400">|</span>
+        <a href="https://docs.nestjs.com" class="text-blue-600 hover:text-blue-800 transition-colors">NestJS Docs</a>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>

@@ -16,11 +16,11 @@ POST http://localhost:8000/users
 Content-Type: application/json
 
 {
-    "name": "jimmy doe",
-    "email": "jimmy@gmail.com",
+    "name": "kenny doe",
+    "email": "kenny@gmail.com",
     "password": "Password123!",
     "phone": "123-456-7890",
-    "role": "user"
+    "role": "organizer"
 }
 
 
