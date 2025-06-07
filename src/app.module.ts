@@ -18,9 +18,10 @@ import { LoggerMiddleware } from './logger.middleware';
 import { APP_GUARD } from '@nestjs/core'; //! APP_INTERCEPTOR add this to restore caching
 // import { createKeyv, Keyv } from '@keyv/redis';
 import { AcesstokenGuard } from './auth/guards/Accesstokenguard';
-import { LogsService } from './logs/logs.service';
+
 import { LogsModule } from './logs/logs.module';
 import { PaginationModule } from './pagination/pagination.module';
+import { LogsService } from './logs/logs.service';
 @Module({
   imports: [
     UsersModule,
