@@ -66,7 +66,7 @@ import { LogsModule } from './logs/logs.module';
         password: configService.get<string>('DATABASE_PASSWORD'),
         database: configService.get<string>('DATABASE_NAME'),
         autoLoadEntities: true,
-        // ssl: true, set true in production
+        ssl: true, //set true in production
         synchronize: true, // automatically creates the database schema
       }),
     }),
