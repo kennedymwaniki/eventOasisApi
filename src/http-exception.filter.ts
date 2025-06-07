@@ -7,8 +7,7 @@ import {
 import { BaseExceptionFilter } from '@nestjs/core';
 
 import { Request, Response } from 'express';
-import { LogsService } from 'src/logs/logs.service';
-
+import { LogsService } from './logs/logs.service'; // Adjust the import path as necessary
 // Interface for standardized error response
 interface MyResponseObj {
   statusCode: number;

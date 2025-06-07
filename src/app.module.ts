@@ -19,8 +19,8 @@ import { APP_GUARD } from '@nestjs/core'; //! APP_INTERCEPTOR add this to restor
 // import { createKeyv, Keyv } from '@keyv/redis';
 import { AcesstokenGuard } from './auth/guards/Accesstokenguard';
 
-import { LogsModule } from 'src/logs/logs.module';
 import { PaginationModule } from './pagination/pagination.module';
+import { LogsModule } from './logs/logs.module';
 @Module({
   imports: [
     UsersModule,
@@ -30,7 +30,7 @@ import { PaginationModule } from './pagination/pagination.module';
     PaymentsModule,
     AuthModule,
     PaginationModule,
-
+    LogsModule,
     TicketsModule,
     ConfigModule.forRoot({
       isGlobal: true,
@@ -70,8 +70,6 @@ import { PaginationModule } from './pagination/pagination.module';
         synchronize: true, // automatically creates the database schema
       }),
     }),
-
-    LogsModule,
   ],
   controllers: [AppController],
   providers: [
