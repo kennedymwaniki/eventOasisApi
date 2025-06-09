@@ -1,5 +1,5 @@
-@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoianVsaWFAZ21haWwuY29tIiwicm9sZSI6InVzZXIiLCJpYXQiOjE3NDkxMDM2MDUsImV4cCI6MTc0OTEwNzIwNX0.zuPZFR5ILPiyviwugijw8ge0wCdTgiTefmY4BsNGExw,
-@refreshToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoianVsaWFAZ21haWwuY29tIiwiaWF0IjoxNzQ5MTAzNjA1LCJleHAiOjE3NDkxMDQyMDl9.czPdnsBj5qaWRMTT8Fus88rKqycG-IEs2itIyzP_sU4,
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoianVsaWFAZ21haWwuY29tIiwicm9sZSI6InVzZXIiLCJpYXQiOjE3NDk0NjkwMDksImV4cCI6MTc0OTQ3MjYwOX0.Qjr6oJmIvJeZmXC0WCm7ceD4hOXaYKP6Th4sMFPm5dY,
+@refreshToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoianVsaWFAZ21haWwuY29tIiwiaWF0IjoxNzQ5NDY5MDA5LCJleHAiOjE3NDk0Njk2MTN9.EX15Sn_UAFJv0l0d62HcVTw_oAUlwrz6sxUkMVKtP3k,
 @url = http://localhost:8000
 
 ### User Registration
@@ -14,6 +14,18 @@ Content-Type: application/json
     "role": "user"
 }
 
+###
+POST http://localhost:8000/users
+Content-Type: application/json
+
+{
+    "name": "julia Doe",
+    "email": "james@gmail.com",
+    "password": "Password123!",
+    "phone": "123-456-7890",
+    "role": "admin"
+}
+
 
 
 ### User Login
@@ -26,8 +38,17 @@ Content-Type: application/json
 }
 
 
+### admin
 
+POST http://localhost:8000/auth/login
+Content-Type: application/json
 
+{
+    "email": "james@gmail.com",
+    "password": "Password123!"
+}
+
+###
 GET {{url}}/auth/refresh
 Authorization: Bearer {{refreshToken}}
 

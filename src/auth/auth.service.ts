@@ -9,6 +9,7 @@ import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { CreateAuthDto } from './dto/login.dto';
+import { UserRole } from 'src/users/enums/roleEnums';
 @Injectable()
 export class AuthService {
   constructor(
@@ -53,7 +54,7 @@ export class AuthService {
     };
   }
 
-  private async getTokens(userId: number, email: string, role: string) {
+  private async getTokens(userId: number, email: string, role: UserRole) {
     const [at, rt] = await Promise.all([
       this.jwtService.signAsync(
         {

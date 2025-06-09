@@ -2,14 +2,16 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy, ExtractJwt } from 'passport-jwt';
+import { UserRole } from 'src/users/enums/roleEnums';
 /*
 - Purpose: Validates short-lived access tokens
 - How it works: Extracts the JWT from the Authorization header, verifies it with the secret key, and attaches the payload to the request
 */
 
-type JWTPayload = {
+export type JWTPayload = {
   sub: number;
   email: string;
+  role: UserRole;
 };
 
 @Injectable()

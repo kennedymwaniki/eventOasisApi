@@ -10,6 +10,7 @@ import {
   HttpStatus,
   ParseIntPipe,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { EventsService } from './events.service';
 import { CreateEventDto } from './dto/create-event.dto';
@@ -19,12 +20,18 @@ import { Event } from './entities/event.entity';
 import { Public } from 'src/auth/decorators/public.decorator';
 import { PaginatedQueryDto } from 'src/pagination/providers/dtos/paginatedQuery.dto';
 import { Paginated } from 'src/pagination/providers/interfaces/paginated.interface';
+import { Roles } from 'src/auth/decorators/role.decorator';
+import { UserRole } from 'src/users/enums/roleEnums';
+import { RolesGuard } from 'src/auth/guards/RoleGuard';
 
+@UseGuards(RolesGuard)
 @Controller('events')
 export class EventsController {
   constructor(private readonly eventsService: EventsService) {}
 
+  // @Public()
   @Post()
+  @Roles(UserRole.ADMIN, UserRole.ORGANIZER)
   @HttpCode(HttpStatus.CREATED)
   async create(@Body() createEventDto: CreateEventDto): Promise<Event> {
     return this.eventsService.create(createEventDto);
