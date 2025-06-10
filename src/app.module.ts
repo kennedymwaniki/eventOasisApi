@@ -21,6 +21,9 @@ import { AcesstokenGuard } from './auth/guards/Accesstokenguard';
 
 import { PaginationModule } from './pagination/pagination.module';
 import { LogsModule } from './logs/logs.module';
+import { MailModule } from './mail/mail.module';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+
 @Module({
   imports: [
     UsersModule,
@@ -31,6 +34,7 @@ import { LogsModule } from './logs/logs.module';
     AuthModule,
     PaginationModule,
     LogsModule,
+    MailModule,
     TicketsModule,
     ConfigModule.forRoot({
       isGlobal: true,
@@ -55,6 +59,17 @@ import { LogsModule } from './logs/logs.module';
     //   },
     // }),
 
+    ThrottlerModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => [
+        {
+          ttl: configService.get<number>('THROTTLE_TTL', 60), // 60 seconds
+          limit: configService.get<number>('THROTTLE_LIMIT', 10), // 10 requests per minute
+        },
+      ],
+    }),
+
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -66,7 +81,7 @@ import { LogsModule } from './logs/logs.module';
         password: configService.get<string>('DATABASE_PASSWORD'),
         database: configService.get<string>('DATABASE_NAME'),
         autoLoadEntities: true,
-        ssl: true, //set true in production
+        // ssl: true, //set true in production
         synchronize: true, // automatically creates the database schema
       }),
     }),
@@ -81,6 +96,10 @@ import { LogsModule } from './logs/logs.module';
     {
       provide: APP_GUARD,
       useClass: AcesstokenGuard, // Global guard to protect routes
+    },
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard, // Global throttler guard to limit requests
     },
   ],
 })

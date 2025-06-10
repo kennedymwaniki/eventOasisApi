@@ -10,8 +10,11 @@ import {
 import { TicketsService } from './tickets.service';
 import { CreateTicketDto } from './dto/create-ticket.dto';
 import { UpdateTicketDto } from './dto/update-ticket.dto';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
 @Controller('tickets')
+@ApiTags('tickets')
+@ApiBearerAuth('tickets')
 export class TicketsController {
   constructor(private readonly ticketsService: TicketsService) {}
 

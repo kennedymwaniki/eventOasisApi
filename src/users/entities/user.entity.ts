@@ -54,6 +54,18 @@ export class User {
   })
   role!: UserRole;
 
+  @Column({
+    nullable: true,
+    type: 'varchar',
+  })
+  otp: string;
+
+  @Column({
+    nullable: true,
+    type: 'varchar',
+  })
+  secret?: string;
+
   @OneToMany(() => Event, (event) => event.user, {
     eager: true,
     cascade: true,

@@ -1,13 +1,16 @@
 ###
-@access_token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoianVsaWFAZ21haWwuY29tIiwicm9sZSI6InVzZXIiLCJpYXQiOjE3NDkwNzI5MTMsImV4cCI6MTc0OTA3NjUxM30.hWiZGciQj62n77fRS7zvfTkspbrysv58LhaQ1Hv2Pqk
+@access_token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjI2LCJlbWFpbCI6Im13YW5naWtlbjEyOUBnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NDk1ODczMjAsImV4cCI6MTc0OTU5MDkyMH0.JsLTzH6-xNeXW5wLVsFTsiADW741Qqpvum19HnvKv0o
 GET http://localhost:8000/users/1
 Authorization: Bearer {{access_token}}
-
-GET http://localhost:8000/users?limit=1&page=1
-
+###
 GET http://localhost:8000/users
-  ?limit=2
-  &page=1
+?limit=1
+&page=1
+Authorization: Bearer {{@access_token}}
+
+
+GET http://localhost:8000/users?limit=2&page=1
+Authorization: Bearer {{access_token}}
 
 
 
@@ -16,8 +19,8 @@ POST http://localhost:8000/users
 Content-Type: application/json
 
 {
-    "name": "kenny doe",
-    "email": "kenny@gmail.com",
+    "name": "ashley doe",
+    "email": "ashley5@gmail.com",
     "password": "Password123!",
     "phone": "123-456-7890",
     "role": "organizer"
@@ -31,7 +34,7 @@ Authorization: Bearer {{access_token}}
 Content-Type: application/json
 
 {
-  "id": 1,
+  
   "name": "John Updated",
   "password": "Password123!"
 }

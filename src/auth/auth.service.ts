@@ -10,12 +10,18 @@ import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { CreateAuthDto } from './dto/login.dto';
 import { UserRole } from 'src/users/enums/roleEnums';
+import * as speakeasy from 'speakeasy';
+// import { UpdateUserDto } from 'src/users/dto/update-user.dto';
+import { ResetPasswordDto } from 'src/auth/dto/restpassworddto';
+import { MailService } from 'src/mail/providers/mail.service';
 @Injectable()
 export class AuthService {
   constructor(
     private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
+    private readonly mailService: MailService,
+    // Assuming you have a MailService for sending emails
   ) {}
 
   public async login(
@@ -48,6 +54,8 @@ export class AuthService {
         id: user.id,
         email: user.email,
         role: user.role,
+        otp: user.otp,
+        secret: user.secret,
         firstName: user.name,
         refreshtoken: user.hashedRefreshToken,
       },
@@ -93,7 +101,6 @@ export class AuthService {
   async signOut(id: number) {
     // set user refresh token to null
     const res = await this.usersService.update(id, {
-      id: id,
       hashedRefreshToken: null,
     });
 
@@ -135,5 +142,92 @@ export class AuthService {
     await this.usersService.saveRefreshToken(foundUser.id, newRefreshToken);
 
     return { accessToken, refreshToken: newRefreshToken };
+  }
+
+  private generateOtp() {
+    const secret = speakeasy.generateSecret({ length: 20 }).base32;
+    const otp = speakeasy.totp({
+      secret: secret,
+      encoding: 'base32',
+      step: 240,
+      digits: 6,
+    });
+    /// type of otp and secret validatiob
+
+    console.log('Generated OTP and Secret types ...........:');
+    console.log(typeof otp, typeof secret);
+    console.log('End of types for otp and secret...........');
+    return { otp, secret };
+  }
+
+  async sendEmailResetOtp(body: { email: string }) {
+    const email = body.email;
+    const user = await this.usersService.findUserByEmail(email);
+    console.log('user in auth service for refresh is', user);
+    if (!user) {
+      throw new NotFoundException(
+        `User with email ${email} in sendEmailResetOtp not found`,
+      );
+    }
+    const id = user.id;
+    const { otp, secret } = this.generateOtp();
+
+    await this.usersService.update(id, {
+      otp,
+      secret,
+    });
+    await this.mailService.sendPasswordResetEmail(user, otp, secret);
+    return { otp, secret };
+  }
+
+  async resetPassword(body: ResetPasswordDto) {
+    const email = body.email;
+    const otp = body.otp;
+
+    if (!email) {
+      throw new BadRequestException('Email is required');
+    }
+
+    const user = await this.usersService.findUserByEmail(email);
+    if (!user) {
+      throw new NotFoundException(`User with email ${email} not found`);
+    }
+
+    if (!user.secret || !user.otp) {
+      throw new BadRequestException('Missing OTP or secret');
+    }
+
+    console.log('user in resetPassword', {
+      secret: user.secret,
+      otp: otp,
+    });
+
+    const id = user.id;
+
+    const isValidOtp = speakeasy.totp.verify({
+      secret: user.secret,
+      encoding: 'base32',
+      token: otp!,
+      step: 240,
+      digits: 6,
+      window: 0,
+    });
+
+    if (!isValidOtp) {
+      throw new BadRequestException('Invalid OTP');
+    }
+
+    // Add logic to actually reset the password
+    if (body.password) {
+      await this.usersService.update(id, {
+        password: body.password,
+        otp: '',
+        secret: '',
+      });
+
+      return { message: 'Password reset successful' };
+    } else {
+      throw new BadRequestException('New password is required');
+    }
   }
 }

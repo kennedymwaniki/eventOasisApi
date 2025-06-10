@@ -10,6 +10,7 @@ export class PaginatedQueryDto {
   limit?: number = 10;
 
   @IsInt()
+  @ApiPropertyOptional()
   @IsOptional()
   @Type(() => Number)
   page?: number = 1;

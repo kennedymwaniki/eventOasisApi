@@ -13,6 +13,7 @@ import * as bcrypt from 'bcrypt';
 import { PaginationProvider } from 'src/pagination/providers/pagination.provider';
 import { PaginatedQueryDto } from 'src/pagination/providers/dtos/paginatedQuery.dto';
 import { Paginated } from 'src/pagination/providers/interfaces/paginated.interface';
+import { MailService } from 'src/mail/providers/mail.service';
 
 @Injectable()
 export class UsersService {
@@ -21,6 +22,7 @@ export class UsersService {
     private usersRepository: Repository<User>,
 
     private readonly paginationProvider: PaginationProvider,
+    private readonly mailService: MailService,
   ) {}
 
   async create(createUserDto: CreateUserDto): Promise<User> {
@@ -41,7 +43,12 @@ export class UsersService {
     createUserDto.password = hashedPassword;
 
     const user = this.usersRepository.create(createUserDto);
-    return this.usersRepository.save(user);
+    const savedUser = await this.usersRepository.save(user);
+
+    // Send welcome email asynchronously (don't block user creation)
+    await this.mailService.sendWelcomeUserEmail(savedUser);
+
+    return savedUser;
   }
 
   async findAll(paginatedQuery: PaginatedQueryDto): Promise<Paginated<User>> {

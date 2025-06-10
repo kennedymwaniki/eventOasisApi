@@ -2,6 +2,7 @@ import {
   IsEmail,
   IsEnum,
   IsNotEmpty,
+  IsOptional,
   IsString,
   Matches,
   MaxLength,
@@ -39,4 +40,19 @@ export class CreateUserDto {
   @IsString()
   @IsNotEmpty()
   phone!: string;
+
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  otp?: string;
+
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  secret?: string;
+
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  hashedRefreshToken?: string | null;
 }

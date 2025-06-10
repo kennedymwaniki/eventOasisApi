@@ -18,8 +18,10 @@ import { User } from './entities/user.entity';
 import { Public } from 'src/auth/decorators/public.decorator';
 import { PaginatedQueryDto } from 'src/pagination/providers/dtos/paginatedQuery.dto';
 import { Paginated } from 'src/pagination/providers/interfaces/paginated.interface';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('users')
+@ApiTags('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 

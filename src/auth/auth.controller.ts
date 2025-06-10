@@ -15,6 +15,10 @@ import { CreateAuthDto } from './dto/login.dto';
 import { Public } from './decorators/public.decorator';
 import { AcesstokenGuard } from './guards/Accesstokenguard';
 import { RefreshTokenGuard } from './guards/RefreshTokenGuard';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
+
+import { ResetPasswordDto } from './dto/restpassworddto';
+import { PasswordResetRequestDto } from './dto/resetRequestDto';
 
 export interface RequestWithUser extends Request {
   user: {
@@ -24,6 +28,7 @@ export interface RequestWithUser extends Request {
   };
 }
 @Controller('auth')
+@ApiTags('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
@@ -52,5 +57,20 @@ export class AuthController {
       throw new UnauthorizedException('Invalid user');
     }
     return this.authService.refreshTokens(id, user.refreshToken);
+  }
+
+  @Public()
+  @Post('password-reset-request')
+  @ApiOperation({ summary: 'Request password reset email with OTP' })
+  public async requestEmailReset(@Body() body: PasswordResetRequestDto) {
+    console.log('this is the requestEmail ', { body });
+    return this.authService.sendEmailResetOtp(body);
+  }
+
+  @Public()
+  @Post('password-reset')
+  @ApiOperation({ summary: 'Reset password using OTP' })
+  async resetPassword(@Body() body: ResetPasswordDto) {
+    return this.authService.resetPassword(body);
   }
 }

@@ -19,11 +19,11 @@ POST http://localhost:8000/users
 Content-Type: application/json
 
 {
-    "name": "julia Doe",
-    "email": "james@gmail.com",
-    "password": "Password123!",
+    "name": "mwangi ken",
+    "email": "mwangiken128@gmail.com",
+    "password": "Password1234!",
     "phone": "123-456-7890",
-    "role": "admin"
+    "role": "user"
 }
 
 
@@ -33,8 +33,8 @@ POST http://localhost:8000/auth/login
 Content-Type: application/json
 
 {
-    "email": "julia@gmail.com",
-    "password": "Password123!"
+    "email": "mwangiken128@gmail.com",
+    "password": "Password1234!"
 }
 
 
@@ -45,6 +45,22 @@ Content-Type: application/json
 
 {
     "email": "james@gmail.com",
+    "password": "Password123!"
+}
+###
+POST http://localhost:8000/auth/login
+Content-Type: application/json
+
+{
+    "email": "mwangiken128@gmail.com",
+    "password": "Password1234!"
+}
+###
+POST http://localhost:8000/auth/login
+Content-Type: application/json
+
+{
+    "email": "jane@gmail.com",
     "password": "Password123!"
 }
 
@@ -61,3 +77,29 @@ Authorization: Bearer {{refreshToken}}
 ### Get User Profile
 GET {{url}}/auth/refresh
 Authorization: Bearer {{refreshToken}}
+
+####
+GET {{url}}/auth/refresh
+
+//requestReset
+#### Request Password Reset
+POST {{url}}/auth/password-reset-request
+Content-Type: application/json
+
+{
+  "email": "mwangiken128@gmail.com"
+}
+
+####
+POST {{url}}/auth/password-reset
+Content-Type: application/json
+
+{
+  "email": "mwangiken128@gmail.com",
+  "otp": "805598",
+  "secret": "JVHEY3KOLNCE2QKMJRSUKO3FNRADCRZE",
+  "password": "Password1234!"
+}
+
+
+

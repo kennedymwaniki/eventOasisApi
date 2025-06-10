@@ -23,8 +23,10 @@ import { Paginated } from 'src/pagination/providers/interfaces/paginated.interfa
 import { Roles } from 'src/auth/decorators/role.decorator';
 import { UserRole } from 'src/users/enums/roleEnums';
 import { RolesGuard } from 'src/auth/guards/RoleGuard';
+import { ApiTags } from '@nestjs/swagger';
 
 @UseGuards(RolesGuard)
+@ApiTags('events')
 @Controller('events')
 export class EventsController {
   constructor(private readonly eventsService: EventsService) {}
@@ -46,12 +48,14 @@ export class EventsController {
   }
 
   @Get(':id')
+  @Public()
   @HttpCode(HttpStatus.OK)
   async findOne(@Param('id', ParseIntPipe) id: number): Promise<Event> {
     return await this.eventsService.findOne(id);
   }
 
   @Patch(':id')
+  @Roles(UserRole.ADMIN, UserRole.ORGANIZER)
   @HttpCode(HttpStatus.OK)
   async update(
     @Param('id') id: number,
@@ -61,6 +65,7 @@ export class EventsController {
   }
 
   @Delete(':id')
+  @Roles(UserRole.ADMIN, UserRole.ORGANIZER)
   @HttpCode(HttpStatus.NO_CONTENT)
   async remove(@Param('id') id: string): Promise<void> {
     return this.eventsService.remove(+id);
