@@ -2,22 +2,22 @@ services:
   eventoasis:
     build:
       context: .
-      dockerfile: Dockerfile
-    container_name: event_oasis_container
+      dockerfile: Dockerfile.prod
+    container_name: event_oasis_container_prod
     networks:
       - event_management_network
     ports:
       - '8000:8000'
     environment:
-      - DATABASE_USERNAME=postgres
-      - DATABASE_PASSWORD=password
-      - DATABASE_NAME=event_management_system_db
-      - DATABASE_HOST=event_management_db
-      - DATABASE_PORT=5432
-      - DATABASE_SYNC=true
-      - DATABASE_AUTOLOAD=true
-      - DATABASE_LOGGING=true
-      - NODE_ENV=development
+      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
+      - DATABASE_USERNAME=${DATABASE_USERNAME}
+      - DATABASE_NAME=${DATABASE_NAME}
+      - DATABASE_HOST=${DATABASE_HOST}
+      - DATABASE_PORT=${DATABASE_PORT}
+
+      - DATABASE_SYNC=${DATABASE_SYNC}
+      - DATABASE_AUTOLOAD=${DATABASE_AUTOLOAD}
+      - NODE_ENV=${NODE_ENV}
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - PORT=8000
@@ -42,28 +42,28 @@ services:
 
   event-management-db:
     image: postgres:15-alpine
-    container_name: event_management_db
+    container_name: event_management_db_prod
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: event_management_system_db
+      POSTGRES_USER: ${DATABASE_USERNAME:-postgres}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD:-postgres}
+      POSTGRES_DB: ${DATABASE_NAME:-postgres}
       # DATABASE_HOST: ${DATABASE_HOST:-event_management_db}
-      POSTGRES_PORT: 5432
+      POSTGRES_PORT: ${DATABASE_PORT:-5432}
     ports:
       - '5432:5432'
     networks:
       - event_management_network
     volumes:
-      - event_management_data:/var/lib/postgresql/data
+      - event_management_data_prod:/var/lib/postgresql/data
     healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -U']
+      test: ['CMD-SHELL', 'pg_isready -U ${DATABASE_USERNAME}']
       interval: 30s
       timeout: 10s
       retries: 5
 
   redis:
     image: redis:8-alpine
-    container_name: redis_container
+    container_name: redis_container_prod
     environment:
       REDIS_PASSWORD: ${REDIS_PASSWORD}
     ports:
@@ -72,7 +72,7 @@ services:
     networks:
       - event_management_network
     volumes:
-      - redis_data:/data
+      - redis_data_prod:/data
     healthcheck:
       test: ['CMD', 'redis-cli', '-a', '${REDIS_PASSWORD}', 'ping']
       interval: 30s
@@ -80,11 +80,11 @@ services:
       retries: 5
 
 volumes:
-  redis_data:
-    name: redis_data
+  redis_data_prod:
+    name: redis_data_prod
     driver: local
-  event_management_data:
-    name: event_management_data
+  event_management_data_prod:
+    name: event_management_data_prod
     driver: local
 
 networks:

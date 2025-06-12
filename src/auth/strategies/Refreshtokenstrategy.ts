@@ -29,7 +29,7 @@ export class Refreshtokenstrategy extends PassportStrategy(Strategy, 'jwt-rt') {
       passReqToCallback: true,
     };
     super(options);
-    console.log('Refreshtokenstrategy constructor completed');
+    // console.log('Refreshtokenstrategy constructor completed');
   }
 
   validate(req: Request, payload: JwtPayload): JwtPayloadWithRt {
