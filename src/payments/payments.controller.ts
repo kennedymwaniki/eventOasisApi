@@ -14,6 +14,7 @@ import { UpdatePaymentDto } from './dto/update-payment.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { UserRole } from 'src/users/enums/roleEnums';
 import { Roles } from 'src/auth/decorators/role.decorator';
+import { Public } from 'src/auth/decorators/public.decorator';
 
 @Controller('payments')
 @ApiTags('payments')
@@ -22,7 +23,7 @@ export class PaymentsController {
   constructor(private readonly paymentsService: PaymentsService) {}
 
   @Post()
-  @Roles(UserRole.ADMIN, UserRole.ORGANIZER, UserRole.USER)
+  @Public()
   create(@Body() createPaymentDto: CreatePaymentDto) {
     return this.paymentsService.create(createPaymentDto);
   }
@@ -34,13 +35,13 @@ export class PaymentsController {
   }
 
   @Get(':id')
-  @Roles(UserRole.ADMIN, UserRole.ORGANIZER, UserRole.USER)
+  @Public()
   findOne(@Param('id') id: number) {
     return this.paymentsService.findOne(id);
   }
 
   @Patch(':id')
-  @Roles(UserRole.ADMIN, UserRole.ORGANIZER, UserRole.USER)
+  @Public()
   update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updatePaymentDto: UpdatePaymentDto,
@@ -49,6 +50,7 @@ export class PaymentsController {
   }
 
   @Delete(':id')
+  @Public()
   @Roles(UserRole.ADMIN, UserRole.ORGANIZER)
   remove(@Param('id') id: number) {
     return this.paymentsService.remove(id);

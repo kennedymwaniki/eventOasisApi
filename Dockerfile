@@ -1,4 +1,4 @@
-FROM node:23-alpine 
+FROM node:20-alpine 
 
 RUN npm install -g pnpm 
 
@@ -20,3 +20,15 @@ EXPOSE 8000
 
 # Start the application in development mode
 CMD ["pnpm", "run", "start:dev"]
+
+
+
+
+# docker-compose -f docker-compose.prod.yml logs eventoasis
+
+#  status for all containers
+# docker-compose -f docker-compose.prod.yml ps
+
+#  docker-compose -f docker-compose.prod.yml logs redis
+
+#  docker-compose -f docker-compose.prod.yml logs event-management-db

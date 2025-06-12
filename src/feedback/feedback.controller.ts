@@ -8,6 +8,7 @@ import {
   Delete,
   HttpCode,
   HttpStatus,
+  UseGuards,
 } from '@nestjs/common';
 import { FeedbackService } from './feedback.service';
 import { CreateFeedbackDto } from './dto/create-feedback.dto';
@@ -15,15 +16,17 @@ import { UpdateFeedbackDto } from './dto/update-feedback.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Roles } from 'src/auth/decorators/role.decorator';
 import { UserRole } from 'src/users/enums/roleEnums';
+import { RolesGuard } from 'src/auth/guards/RoleGuard';
 
 @Controller('feedback')
 @ApiBearerAuth()
+@UseGuards(RolesGuard)
 @ApiTags('feedback')
 export class FeedbackController {
   constructor(private readonly feedbackService: FeedbackService) {}
 
   @Post()
-  @Roles(UserRole.ADMIN, UserRole.ORGANIZER)
+  @Roles(UserRole.ADMIN, UserRole.ORGANIZER, UserRole.USER)
   @HttpCode(HttpStatus.CREATED)
   create(@Body() createFeedbackDto: CreateFeedbackDto) {
     return this.feedbackService.create(createFeedbackDto);

@@ -15,10 +15,16 @@ async function bootstrap() {
       contentSecurityPolicy: {
         directives: {
           defaultSrc: ["'self'"],
-          scriptSrc: ["'self'", "'unsafe-inline'", 'cdn.tailwindcss.com'],
+          scriptSrc: [
+            "'self'",
+            "'unsafe-inline'",
+            "'unsafe-eval'",
+            'cdn.tailwindcss.com',
+          ], // Added unsafe-eval
           styleSrc: ["'self'", "'unsafe-inline'", 'cdnjs.cloudflare.com'],
-          fontSrc: ["'self'", 'cdnjs.cloudflare.com'],
+          fontSrc: ["'self'", 'cdnjs.cloudflare.com', 'data:'], // Added data: for base64 encoded fonts
           imgSrc: ["'self'", 'data:', '*.postgresql.org', 'nestjs.com'],
+          connectSrc: ["'self'", '*'], // Allow connections to API
         },
       },
     }),

@@ -33,7 +33,7 @@ export class EventsController {
 
   // @Public()
   @Post()
-  @Roles(UserRole.ADMIN, UserRole.ORGANIZER)
+  @Public()
   @HttpCode(HttpStatus.CREATED)
   async create(@Body() createEventDto: CreateEventDto): Promise<Event> {
     return this.eventsService.create(createEventDto);
@@ -55,7 +55,7 @@ export class EventsController {
   }
 
   @Patch(':id')
-  @Roles(UserRole.ADMIN, UserRole.ORGANIZER)
+  @Public()
   @HttpCode(HttpStatus.OK)
   async update(
     @Param('id') id: number,
