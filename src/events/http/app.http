@@ -1,6 +1,8 @@
 @accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjgsImVtYWlsIjoiamFtZXNAZ21haWwuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzQ5NTUxNTE5LCJleHAiOjE3NDk1NTUxMTl9.TnOmezWwVlbpN4e-E5nAvSGJuH9X3ms7VjFwJ-I4zJU
 @refreshToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoianVsaWFAZ21haWwuY29tIiwiaWF0IjoxNzQ5NDY5MDA5LCJleHAiOjE3NDk0Njk2MTN9.EX15Sn_UAFJv0l0d62HcVTw_oAUlwrz6sxUkMVKtP3k
 @url = http://localhost:8000
+
+####
 GET http://localhost:8000/events
     ?limit=2
     &page=1

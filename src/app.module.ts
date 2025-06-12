@@ -14,15 +14,16 @@ import { AuthModule } from './auth/auth.module';
 import databaseConfig from './config/databaseConfig';
 import { LoggerMiddleware } from './logger.middleware';
 
-// import { CacheModule, CacheInterceptor } from '@nestjs/cache-manager';
-import { APP_GUARD } from '@nestjs/core'; //! APP_INTERCEPTOR add this to restore caching
-// import { createKeyv, Keyv } from '@keyv/redis';
+import { CacheModule, CacheInterceptor } from '@nestjs/cache-manager';
+import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core'; //! APP_INTERCEPTOR add this to restore caching
+import { createKeyv, Keyv } from '@keyv/redis';
 import { AcesstokenGuard } from './auth/guards/Accesstokenguard';
 
 import { PaginationModule } from './pagination/pagination.module';
 import { LogsModule } from './logs/logs.module';
 import { MailModule } from './mail/mail.module';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { CacheableMemory } from 'cacheable';
 
 @Module({
   imports: [
@@ -41,25 +42,25 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
       envFilePath: '.env',
       load: [databaseConfig], // path to the environment variables file
     }),
-    // CacheModule.registerAsync({
-    //   imports: [ConfigModule],
-    //   inject: [ConfigService],
-    //   isGlobal: true,
-    //   useFactory: (configService: ConfigService) => {
-    //     return {
-    //       ttl: 60000, // 60 sec: Cache time-to-live
-    //       stores: [
-    //         new Keyv({
-    //           store: new CacheableMemory({
-    //             ttl: 60 * 60 * 1000,
-    //             lruSize: 5000,
-    //           }),
-    //         }),
-    //         createKeyv(configService.get<string>('REDIS_URL')),
-    //       ],
-    //     };
-    //   },
-    // }),
+    CacheModule.registerAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      isGlobal: true,
+      useFactory: (configService: ConfigService) => {
+        return {
+          ttl: 60000, // 60 sec: Cache time-to-live
+          stores: [
+            new Keyv({
+              store: new CacheableMemory({
+                ttl: 60 * 60 * 1000,
+                lruSize: 5000,
+              }),
+            }),
+            createKeyv(configService.get<string>('REDIS_URL')),
+          ],
+        };
+      },
+    }),
 
     ThrottlerModule.forRoot({
       throttlers: [
@@ -81,7 +82,7 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
         password: configService.get<string>('DATABASE_PASSWORD'),
         database: configService.get<string>('DATABASE_NAME'),
         autoLoadEntities: true,
-        ssl: true, //set true in production
+        // ssl: true, //set true in production
         synchronize: true,
       }),
     }),
@@ -89,10 +90,10 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
   controllers: [AppController],
   providers: [
     AppService,
-    // {
-    //   provide: APP_INTERCEPTOR,
-    //   useClass: CacheInterceptor,
-    // },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: CacheInterceptor,
+    },
     {
       provide: APP_GUARD,
       useClass: AcesstokenGuard, // Global guard to protect routes
