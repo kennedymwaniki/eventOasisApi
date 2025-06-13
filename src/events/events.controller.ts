@@ -33,14 +33,14 @@ export class EventsController {
 
   // @Public()
   @Post()
-  @Public()
+  @Roles(UserRole.ADMIN, UserRole.ORGANIZER)
   @HttpCode(HttpStatus.CREATED)
   async create(@Body() createEventDto: CreateEventDto): Promise<Event> {
     return this.eventsService.create(createEventDto);
   }
 
   @Get()
-  @Public()
+  @Roles(UserRole.ADMIN, UserRole.ORGANIZER)
   async findAll(
     @Query() paginationQuery: PaginatedQueryDto,
   ): Promise<Paginated<Event>> {
@@ -48,7 +48,7 @@ export class EventsController {
   }
 
   @Get(':id')
-  @Public()
+  @Roles(UserRole.ADMIN, UserRole.ORGANIZER)
   @HttpCode(HttpStatus.OK)
   async findOne(@Param('id', ParseIntPipe) id: number): Promise<Event> {
     return await this.eventsService.findOne(id);

@@ -39,6 +39,7 @@ export class UsersController {
   }
 
   @Get()
+  @Roles(UserRole.ADMIN, UserRole.ORGANIZER)
   @Roles(UserRole.ADMIN, UserRole.ORGANIZER, UserRole.USER)
   findAll(
     @Query() paginatedQuery: PaginatedQueryDto,

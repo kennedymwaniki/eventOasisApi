@@ -1,4 +1,16 @@
 ### Create Feedback
+###
+@access_token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjI2LCJlbWFpbCI6Im13YW5naWtlbjEyOUBnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NDk1ODczMjAsImV4cCI6MTc0OTU5MDkyMH0.JsLTzH6-xNeXW5wLVsFTsiADW741Qqpvum19HnvKv0o
+
+
+@userToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMyLCJlbWFpbCI6Imp1bGlhMkBnbWFpbC5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTc0OTc1NTA4NywiZXhwIjoxNzQ5NzU4Njg3fQ._UV_iptgwA4bB2oPifREYipWGRpu8RD0LTz-WsKeNi4
+
+@adminToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjgsImVtYWlsIjoiamFtZXNAZ21haWwuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzQ5NzU1MTgzLCJleHAiOjE3NDk3NTg3ODN9.4797e08_E9TgYShkOC4nLPwmozvUvOHnCU1GbYkgqyQ
+
+
+
+###
+
 POST http://localhost:8000/feedback
 Content-Type: application/json
 Authorization: Bearer {{access_token}}
@@ -12,7 +24,7 @@ Authorization: Bearer {{access_token}}
 
 ### Get All Feedback
 GET http://localhost:8000/feedback
-Authorization: Bearer {{access_token}}
+Authorization: Bearer {{userToken}}
 
 ### Get Feedback by ID
 GET http://localhost:8000/feedback/1

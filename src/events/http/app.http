@@ -2,18 +2,25 @@
 @refreshToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoianVsaWFAZ21haWwuY29tIiwiaWF0IjoxNzQ5NDY5MDA5LCJleHAiOjE3NDk0Njk2MTN9.EX15Sn_UAFJv0l0d62HcVTw_oAUlwrz6sxUkMVKtP3k
 @url = http://localhost:8000
 
-####
-GET http://localhost:8000/events
-    ?limit=2
-    &page=1
+
+@userToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMyLCJlbWFpbCI6Imp1bGlhMkBnbWFpbC5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTc0OTc1NTA4NywiZXhwIjoxNzQ5NzU4Njg3fQ._UV_iptgwA4bB2oPifREYipWGRpu8RD0LTz-WsKeNi4
+
+@adminToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjgsImVtYWlsIjoiamFtZXNAZ21haWwuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzQ5NzU1MTgzLCJleHAiOjE3NDk3NTg3ODN9.4797e08_E9TgYShkOC4nLPwmozvUvOHnCU1GbYkgqyQ
+
+
+
+#### Get Events
+GET http://localhost:8000/events?limit=2&page=1
+Authorization : Bearer {{adminToken}}
+   
 
 ### Get Event Details
 GET http://localhost:8000/events/1
-Authorization : Bearer {{accessToken}}
+Authorization : Bearer {{adminToken}}
 
 ###
 POST http://localhost:8000/events
-Authorization : Bearer {{accessToken}}
+Authorization : Bearer {{userToken}}
 Content-Type: application/json
 
 {
@@ -37,3 +44,8 @@ Content-Type: application/json
   "event_location": "New Nairobi Convention Center",
   "event_description": "Decode description with more details about the conference"
 }
+
+
+###
+DELETE http://localhost:8000/events/4
+Authorization : Bearer {{adminToken}}
