@@ -1,6 +1,6 @@
 FROM node:20-alpine 
 
-# RUN npm install -g pnpm 
+RUN npm install -g pnpm 
 
 WORKDIR /app
 
@@ -10,7 +10,7 @@ RUN mkdir -p /app/log_files
 COPY package.json pnpm-lock.yaml ./
 
 
-RUN npm install --frozen-lockfile
+RUN pnpm install --frozen-lockfile
 
 COPY . .
 
@@ -19,7 +19,7 @@ COPY . .
 EXPOSE 8000
 
 # Start the application in development mode
-CMD ["npm", "run", "start:dev"]
+CMD ["pnpm", "run", "start:dev"]
 
 
 

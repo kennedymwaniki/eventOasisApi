@@ -23,10 +23,11 @@ import { Paginated } from 'src/pagination/providers/interfaces/paginated.interfa
 import { Roles } from 'src/auth/decorators/role.decorator';
 import { UserRole } from 'src/users/enums/roleEnums';
 import { RolesGuard } from 'src/auth/guards/RoleGuard';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 
 @UseGuards(RolesGuard)
 @ApiTags('events')
+@ApiBearerAuth()
 @Controller('events')
 export class EventsController {
   constructor(private readonly eventsService: EventsService) {}
@@ -40,7 +41,7 @@ export class EventsController {
   }
 
   @Get()
-  @Roles(UserRole.ADMIN, UserRole.ORGANIZER)
+  @Roles(UserRole.ADMIN, UserRole.ORGANIZER, UserRole.USER)
   async findAll(
     @Query() paginationQuery: PaginatedQueryDto,
   ): Promise<Paginated<Event>> {
@@ -48,7 +49,7 @@ export class EventsController {
   }
 
   @Get(':id')
-  @Roles(UserRole.ADMIN, UserRole.ORGANIZER)
+  @Roles(UserRole.ADMIN, UserRole.ORGANIZER, UserRole.USER)
   @HttpCode(HttpStatus.OK)
   async findOne(@Param('id', ParseIntPipe) id: number): Promise<Event> {
     return await this.eventsService.findOne(id);
