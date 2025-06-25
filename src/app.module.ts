@@ -66,7 +66,7 @@ import { CacheableMemory } from 'cacheable';
       throttlers: [
         {
           ttl: 60000, // 60 seconds
-          limit: 10, // 10 requests per minute
+          limit: 100, // 100 requests per minute
         },
       ],
     }),
